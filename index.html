@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>חדשות תעופה ✈️</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #cce7ff; /* כחול בהיר */
+      background: #cce7ff;
       margin: 0;
       padding: 0;
       color: #333;
@@ -49,8 +50,8 @@
 
     .article-card img {
       width: 100%;
-      max-height: 300px;        /* גובה מקסימלי לדף הראשי */
-      object-fit: cover;        /* חיתוך חכם לשמירה על פרופורציות */
+      max-height: 300px;
+      object-fit: cover;
       display: block;
     }
 
@@ -79,13 +80,48 @@
         font-size: 1em;
       }
     }
+
+    /* 🔹 אייקונים צפים – טלגרם + ווצאפ */
+    .social-floating {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .social-floating a img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease;
+    }
+
+    .social-floating a img:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
+
 <body>
 
 <header>חדשות תעופה ✈️</header>
 
 <div class="container" id="news-container"></div>
+
+<!-- 🔹 אייקונים צפים -->
+<div class="social-floating">
+  <a href="https://t.me/AviationNewsIL" target="_blank" aria-label="Telegram">
+    <img src="telegram_1.png" alt="Telegram">
+  </a>
+
+  <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank" aria-label="WhatsApp">
+    <img src="whatsapp_1.png" alt="WhatsApp">
+  </a>
+</div>
 
 <script>
   async function loadNews() {
@@ -95,7 +131,6 @@
       );
       const newsData = await response.json();
 
-      // מיין לפי position
       newsData.sort((a, b) => a.position - b.position);
 
       const container = document.getElementById('news-container');
@@ -104,16 +139,11 @@
       newsData.forEach(article => {
         const card = document.createElement('a');
         card.className = 'article-card';
-        card.href = `article.html?id=${article.id}`; 
-      
+        card.href = `article.html?id=${article.id}`;
 
-        // תמונה ראשית
-        if(article.main_image){
+        if (article.main_image) {
           const img = document.createElement('img');
           img.src = article.main_image;
-          img.style.maxHeight = "300px";
-          img.style.objectFit = "cover";
-          img.style.width = "100%";
           card.appendChild(img);
         }
 
@@ -127,6 +157,7 @@
         const h3 = document.createElement('h3');
         h3.textContent = article.subtitle;
         contentDiv.appendChild(h3);
+
         const writerP = document.createElement('p');
         writerP.style.fontSize = "0.9em";
         writerP.style.color = "#777";
@@ -140,8 +171,8 @@
 
     } catch (err) {
       console.error('Error loading news:', err);
-      const container = document.getElementById('news-container');
-      container.innerHTML = '<p>שגיאה בטעינת הכתבות. נסו לרענן את הדף.</p>';
+      document.getElementById('news-container').innerHTML =
+        '<p>שגיאה בטעינת הכתבות. נסו לרענן את הדף.</p>';
     }
   }
 
