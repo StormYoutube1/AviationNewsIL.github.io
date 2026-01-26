@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>חדשות תעופה ✈️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .article {
+      background: #fff;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .article img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-content {
+      padding: 15px;
+    }
+    .article-content h2 {
+      margin: 0 0 10px 0;
+    }
+    .article-content h3 {
+      margin: 0 0 15px 0;
+      color: #555;
+      font-weight: normal;
+    }
+    .media-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px;
+    }
+    .media-gallery img, .media-gallery video {
+      max-width: calc(50% - 10px);
+      border-radius: 5px;
+    }
+    video {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="news-container">
+    <h1>חדשות תעופה ✈️</h1>
+    <div id="articles"></div>
+  </div>
+
+  <script>
+    async function loadNews() {
+      try {
+        const response = await fetch('news.json');
+        const newsData = await response.json();
+
+        // מיין לפי position
+        newsData.sort((a, b) => a.position - b.position);
+
+        const container = document.getElementById('articles');
+        container.innerHTML = '';
+
+        newsData.forEach(article => {
+          const artDiv = document.createElement('div');
+          artDiv.className = 'article';
+
+          // תמונה ראשית
+          if(article.main_image){
+            const img = document.createElement('img');
+            img.src = article.main_image;
+            artDiv.appendChild(img);
+          }
+
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'article-content';
+
+          const h2 = document.createElement('h2');
+          h2.textContent = article.title;
+          contentDiv.appendChild(h2);
+
+          const h3 = document.createElement('h3');
+          h3.textContent = article.subtitle;
+          contentDiv.appendChild(h3);
+
+          const p = document.createElement('p');
+          p.textContent = article.content;
+          contentDiv.appendChild(p);
+
+          artDiv.appendChild(contentDiv);
+
+          // גלריית מדיה
+          if(article.media && article.media.length){
+            const gallery = document.createElement('div');
+            gallery.className = 'media-gallery';
+            article.media.forEach(m => {
+              if(m.endsWith('.mp4')){
+                const vid = document.createElement('video');
+                vid.src = m;
+                vid.controls = true;
+                gallery.appendChild(vid);
+              } else {
+                const img = document.createElement('img');
+                img.src = m;
+                gallery.appendChild(img);
+              }
+            });
+            artDiv.appendChild(gallery);
+          }
+
+          container.appendChild(artDiv);
+        });
+
+      } catch (err) {
+        console.error('Error loading news:', err);
+      }
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>
