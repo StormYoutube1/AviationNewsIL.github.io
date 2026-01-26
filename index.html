@@ -49,7 +49,8 @@
 
     .article-card img {
       width: 100%;
-      height: auto;
+      max-height: 300px;        /* גובה מקסימלי לדף הראשי */
+      object-fit: cover;        /* חיתוך חכם לשמירה על פרופורציות */
       display: block;
     }
 
@@ -108,6 +109,9 @@
         if(article.main_image){
           const img = document.createElement('img');
           img.src = article.main_image;
+          img.style.maxHeight = "300px";
+          img.style.objectFit = "cover";
+          img.style.width = "100%";
           card.appendChild(img);
         }
 
