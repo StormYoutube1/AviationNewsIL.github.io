@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>כתבה ✈️</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #e0f0ff; /* כחול בהיר */
+      background: #e0f0ff;
       margin: 0;
       padding: 0;
-      direction: rtl; /* מימין לשמאל */
+      direction: rtl;
       text-align: right;
       color: #333;
     }
@@ -25,15 +26,15 @@
     }
 
     #main-image {
-      width: 100%;               /* תתפוס את רוחב המיכל */
-      max-width: 700px;          /* מגבלת רוחב מרבית */
-      max-height: 400px;         /* גובה מרבי */
-      height: auto;              /* שמירה על פרופורציות */
-      object-fit: contain;       /* התאמה אוטומטית */
+      width: 100%;
+      max-width: 700px;
+      max-height: 400px;
+      height: auto;
+      object-fit: contain;
       border-radius: 8px;
       margin-bottom: 20px;
       display: block;
-      background: #f0f8ff;       /* רקע עדין למקרה שהתמונה קטנה */
+      background: #f0f8ff;
       margin-left: auto;
       margin-right: auto;
     }
@@ -66,13 +67,10 @@
       margin-top: 20px;
     }
 
-    .media-gallery img, .media-gallery video {
+    .media-gallery img,
+    .media-gallery video {
       max-width: calc(50% - 10px);
       border-radius: 5px;
-    }
-
-    video {
-      display: block;
     }
 
     a {
@@ -91,17 +89,54 @@
       font-weight: bold;
     }
 
+    /* ===== אייקונים צפים ===== */
+    .social-float {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 9999;
+    }
+
+    .social-float img {
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .social-float img:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
+
 <body>
+
   <div class="container" id="news-container">
     <a href="index.html" class="back-link">⬅ חזרה לדף הראשי</a>
+
     <img id="main-image" src="" alt="תמונה ראשית">
+
     <h1 id="title"></h1>
     <h3 id="subtitle"></h3>
     <p id="writer-timestamp" style="font-size:0.9em; color:#777; margin-top:5px;"></p>
+
     <div id="content"></div>
     <div class="media-gallery" id="media-gallery"></div>
+  </div>
+
+  <!-- אייקונים צפים -->
+  <div class="social-float">
+    <a href="https://t.me/AviationNewsIL" target="_blank" aria-label="Telegram">
+      <img src="telegram_1.png" alt="Telegram">
+    </a>
+
+    <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank" aria-label="WhatsApp">
+      <img src="whatsapp_1.png" alt="WhatsApp">
+    </a>
   </div>
 
   <script>
@@ -123,28 +158,28 @@
 
         document.getElementById('title').textContent = article.title;
         document.getElementById('subtitle').textContent = article.subtitle;
+
         const writerElem = document.getElementById('writer-timestamp');
         writerElem.textContent = article.writer + " | " + article.timestamp;
-        if(article.subtitle){
+
+        if (article.subtitle) {
           document.querySelector('#subtitle').after(writerElem);
         } else {
           document.querySelector('#title').after(writerElem);
         }
-        writerElem.style.display = "block";
-        
 
         const mainImg = document.getElementById('main-image');
         mainImg.src = article.main_image;
 
-   
         document.title = article.title + " - חדשות תעופה ✈️";
 
-        document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
+        document.getElementById('content').innerHTML =
+          article.content.replace(/\n/g, '<br>');
 
         const gallery = document.getElementById('media-gallery');
-        if(article.media && article.media.length){
+        if (article.media && article.media.length) {
           article.media.forEach(m => {
-            if(m.endsWith('.mp4')){
+            if (m.endsWith('.mp4')) {
               const vid = document.createElement('video');
               vid.src = m;
               vid.controls = true;
@@ -159,11 +194,13 @@
 
       } catch (err) {
         console.error('Error loading article:', err);
-        document.getElementById('news-container').innerHTML = "<p>אירעה שגיאה בטעינת הכתבה.</p>";
+        document.getElementById('news-container').innerHTML =
+          "<p>אירעה שגיאה בטעינת הכתבה.</p>";
       }
     }
 
     loadArticle();
   </script>
+
 </body>
 </html>
