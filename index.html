@@ -125,6 +125,12 @@
         const h3 = document.createElement('h3');
         h3.textContent = article.subtitle;
         contentDiv.appendChild(h3);
+        const writerP = document.createElement('p');
+        writerP.style.fontSize = "0.9em";
+        writerP.style.color = "#777";
+        writerP.style.marginTop = "5px";
+        writerP.textContent = article.writer + " | " + article.timestamp;
+        contentDiv.appendChild(writerP);
 
         card.appendChild(contentDiv);
         container.appendChild(card);
