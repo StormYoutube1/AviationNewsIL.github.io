@@ -110,7 +110,9 @@
 
     async function loadArticle() {
       try {
-        const response = await fetch('https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json');
+        const response = await fetch(
+          'https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json?cache=' + new Date().getTime()
+        );
         const newsData = await response.json();
 
         const article = newsData.find(a => a.id === articleId);
