@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>כתבה ✈️</title>
+  <title>- חדשות תעופה ✈️</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,6 +12,7 @@
       padding: 0;
       direction: rtl; /* מימין לשמאל */
       text-align: right;
+      color: #333;
     }
 
     .container {
@@ -25,8 +26,13 @@
 
     #main-image {
       width: 100%;
+      max-height: 500px;       /* גובה מרבי */
+      height: auto;            /* שמירה על פרופורציות */
+      object-fit: contain;     /* התאמה אוטומטית עם שמירה על יחס */
       border-radius: 8px;
       margin-bottom: 20px;
+      display: block;
+      background: #f0f8ff;     /* רקע עדין למקרה שהתמונה קטנה */
     }
 
     h1 {
@@ -100,7 +106,6 @@
   </div>
 
   <script>
-    // קבלת ID של הכתבה מה-URL
     const params = new URLSearchParams(window.location.search);
     const articleId = params.get('id');
 
@@ -115,16 +120,22 @@
           return;
         }
 
-        // עדכון תוכן
         document.getElementById('title').textContent = article.title;
         document.getElementById('subtitle').textContent = article.subtitle;
-        document.getElementById('main-image').src = article.main_image;
-        document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
 
-        // עדכון title של הדפדפן
+        // התמונה הראשית מותאמת אוטומטית עם שמירה על פרופורציות
+        const mainImg = document.getElementById('main-image');
+        mainImg.src = article.main_image;
+        mainImg.onload = () => {
+          // אם התמונה קטנה יותר מהגודל המירבי, תותאם אוטומטית
+          if(mainImg.naturalWidth < 900){
+            mainImg.style.width = mainImg.naturalWidth + "px";
+          }
+        }
+
+        document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
         document.title = article.title + " ✈️";
 
-        // גלריית מדיה
         const gallery = document.getElementById('media-gallery');
         if(article.media && article.media.length){
           article.media.forEach(m => {
