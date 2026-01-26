@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>כתבה ✈️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e0f0ff; /* כחול בהיר */
+      margin: 0;
+      padding: 0;
+      direction: rtl; /* מימין לשמאל */
+      text-align: right;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    #main-image {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 0 0 10px 0;
+      text-align: center;
+      color: #004080;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      margin: 0 0 10px 0;
+      color: #004080;
+    }
+
+    h3 {
+      font-size: 1.2em;
+      margin: 0 0 15px 0;
+      color: #555;
+      font-weight: normal;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 1em;
+      margin-bottom: 15px;
+    }
+
+    .media-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .media-gallery img, .media-gallery video {
+      max-width: calc(50% - 10px);
+      border-radius: 5px;
+    }
+
+    video {
+      display: block;
+    }
+
+    a {
+      color: #004080;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: block;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container" id="news-container">
+    <a href="index.html" class="back-link">⬅ חזרה לדף הראשי</a>
+    <img id="main-image" src="" alt="תמונה ראשית">
+    <h1 id="title"></h1>
+    <h3 id="subtitle"></h3>
+    <div id="content"></div>
+    <div class="media-gallery" id="media-gallery"></div>
+  </div>
+
+  <script>
+    // קבלת ID של הכתבה מה-URL
+    const params = new URLSearchParams(window.location.search);
+    const articleId = params.get('id');
+
+    async function loadArticle() {
+      try {
+        const response = await fetch('https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json');
+        const newsData = await response.json();
+
+        const article = newsData.find(a => a.id === articleId);
+        if (!article) {
+          document.getElementById('news-container').innerHTML = "<p>לא נמצאה כתבה.</p>";
+          return;
+        }
+
+        // עדכון תוכן
+        document.getElementById('title').textContent = article.title;
+        document.getElementById('subtitle').textContent = article.subtitle;
+        document.getElementById('main-image').src = article.main_image;
+        document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
+
+        // עדכון title של הדפדפן
+        document.title = article.title + " ✈️";
+
+        // גלריית מדיה
+        const gallery = document.getElementById('media-gallery');
+        if(article.media && article.media.length){
+          article.media.forEach(m => {
+            if(m.endsWith('.mp4')){
+              const vid = document.createElement('video');
+              vid.src = m;
+              vid.controls = true;
+              gallery.appendChild(vid);
+            } else {
+              const img = document.createElement('img');
+              img.src = m;
+              gallery.appendChild(img);
+            }
+          });
+        }
+
+      } catch (err) {
+        console.error('Error loading article:', err);
+        document.getElementById('news-container').innerHTML = "<p>אירעה שגיאה בטעינת הכתבה.</p>";
+      }
+    }
+
+    loadArticle();
+  </script>
+</body>
+</html>
