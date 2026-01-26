@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>- חדשות תעופה ✈️</title>
+  <title>כתבה ✈️</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -25,14 +25,17 @@
     }
 
     #main-image {
-      width: 100%;
-      max-height: 500px;       /* גובה מרבי */
-      height: auto;            /* שמירה על פרופורציות */
-      object-fit: contain;     /* התאמה אוטומטית עם שמירה על יחס */
+      width: 100%;               /* תתפוס את רוחב המיכל */
+      max-width: 800px;          /* מגבלת רוחב מרבית */
+      max-height: 450px;         /* גובה מרבי */
+      height: auto;              /* שמירה על פרופורציות */
+      object-fit: contain;       /* התאמה אוטומטית */
       border-radius: 8px;
       margin-bottom: 20px;
       display: block;
-      background: #f0f8ff;     /* רקע עדין למקרה שהתמונה קטנה */
+      background: #f0f8ff;       /* רקע עדין למקרה שהתמונה קטנה */
+      margin-left: auto;
+      margin-right: auto;
     }
 
     h1 {
@@ -42,17 +45,12 @@
       color: #004080;
     }
 
-    h2 {
-      font-size: 1.5em;
-      margin: 0 0 10px 0;
-      color: #004080;
-    }
-
     h3 {
       font-size: 1.2em;
       margin: 0 0 15px 0;
       color: #555;
       font-weight: normal;
+      text-align: center;
     }
 
     p {
@@ -123,18 +121,13 @@
         document.getElementById('title').textContent = article.title;
         document.getElementById('subtitle').textContent = article.subtitle;
 
-        // התמונה הראשית מותאמת אוטומטית עם שמירה על פרופורציות
         const mainImg = document.getElementById('main-image');
         mainImg.src = article.main_image;
-        mainImg.onload = () => {
-          // אם התמונה קטנה יותר מהגודל המירבי, תותאם אוטומטית
-          if(mainImg.naturalWidth < 900){
-            mainImg.style.width = mainImg.naturalWidth + "px";
-          }
-        }
+
+   
+        document.title = article.title + " - חדשות תעופה ✈️";
 
         document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
-        document.title = article.title + " ✈️";
 
         const gallery = document.getElementById('media-gallery');
         if(article.media && article.media.length){
