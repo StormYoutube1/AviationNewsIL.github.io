@@ -99,6 +99,7 @@
     <img id="main-image" src="" alt="תמונה ראשית">
     <h1 id="title"></h1>
     <h3 id="subtitle"></h3>
+    <p id="writer-timestamp" style="font-size:0.9em; color:#777; margin-top:5px;"></p>
     <div id="content"></div>
     <div class="media-gallery" id="media-gallery"></div>
   </div>
@@ -120,6 +121,14 @@
 
         document.getElementById('title').textContent = article.title;
         document.getElementById('subtitle').textContent = article.subtitle;
+        const writerElem = document.getElementById('writer-timestamp');
+        writerElem.textContent = article.writer + " | " + article.timestamp;
+        if(article.subtitle){
+          document.querySelector('#subtitle').after(writerElem);
+        } else {
+          document.querySelector('#title').after(writerElem);
+        writerElem.style.display = "block";
+        
 
         const mainImg = document.getElementById('main-image');
         mainImg.src = article.main_image;
