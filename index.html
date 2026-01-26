@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,127 +7,134 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      background: #cce7ff; /* כחול בהיר */
       margin: 0;
       padding: 0;
+      color: #333;
     }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 20px 20px;
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #004080;
+      text-shadow: 1px 1px #b0d4ff;
+    }
+
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 20px;
     }
-    .article {
+
+    .article-card {
       background: #fff;
-      margin-bottom: 20px;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
     }
-    .article img {
+
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .article-card img {
       width: 100%;
       height: auto;
       display: block;
     }
+
     .article-content {
-      padding: 15px;
+      padding: 20px;
     }
+
     .article-content h2 {
       margin: 0 0 10px 0;
+      font-size: 1.8em;
+      color: #004080;
     }
+
     .article-content h3 {
-      margin: 0 0 15px 0;
+      margin: 0;
+      font-size: 1.2em;
       color: #555;
       font-weight: normal;
     }
-    .media-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 10px;
-    }
-    .media-gallery img, .media-gallery video {
-      max-width: calc(50% - 10px);
-      border-radius: 5px;
-    }
-    video {
-      display: block;
+
+    @media (max-width: 600px) {
+      .article-content h2 {
+        font-size: 1.5em;
+      }
+      .article-content h3 {
+        font-size: 1em;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container" id="news-container">
-    <h1>חדשות תעופה ✈️</h1>
-    <div id="articles"></div>
-  </div>
 
-  <script>
-    async function loadNews() {
-      try {
-        const response = await fetch('https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json');
-        const newsData = await response.json();
+<header>חדשות תעופה ✈️</header>
 
-        // מיין לפי position
-        newsData.sort((a, b) => a.position - b.position);
+<div class="container" id="news-container"></div>
 
-        const container = document.getElementById('articles');
-        container.innerHTML = '';
+<script>
+  async function loadNews() {
+    try {
+      const response = await fetch('https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json');
+      const newsData = await response.json();
 
-        newsData.forEach(article => {
-          const artDiv = document.createElement('div');
-          artDiv.className = 'article';
+      // מיין לפי position
+      newsData.sort((a, b) => a.position - b.position);
 
-          // תמונה ראשית
-          if(article.main_image){
-            const img = document.createElement('img');
-            img.src = article.main_image;
-            artDiv.appendChild(img);
-          }
+      const container = document.getElementById('news-container');
+      container.innerHTML = '';
 
-          const contentDiv = document.createElement('div');
-          contentDiv.className = 'article-content';
+      newsData.forEach(article => {
+        const card = document.createElement('a');
+        card.className = 'article-card';
+        card.href = `article.html?id=${article.id}`; // פותח בעמוד נפרד עם id
+        card.target = "_blank";
 
-          const h2 = document.createElement('h2');
-          h2.textContent = article.title;
-          contentDiv.appendChild(h2);
+        // תמונה ראשית
+        if(article.main_image){
+          const img = document.createElement('img');
+          img.src = article.main_image;
+          card.appendChild(img);
+        }
 
-          const h3 = document.createElement('h3');
-          h3.textContent = article.subtitle;
-          contentDiv.appendChild(h3);
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'article-content';
 
-          const p = document.createElement('p');
-          p.textContent = article.content;
-          contentDiv.appendChild(p);
+        const h2 = document.createElement('h2');
+        h2.textContent = article.title;
+        contentDiv.appendChild(h2);
 
-          artDiv.appendChild(contentDiv);
+        const h3 = document.createElement('h3');
+        h3.textContent = article.subtitle;
+        contentDiv.appendChild(h3);
 
-          // גלריית מדיה
-          if(article.media && article.media.length){
-            const gallery = document.createElement('div');
-            gallery.className = 'media-gallery';
-            article.media.forEach(m => {
-              if(m.endsWith('.mp4')){
-                const vid = document.createElement('video');
-                vid.src = m;
-                vid.controls = true;
-                gallery.appendChild(vid);
-              } else {
-                const img = document.createElement('img');
-                img.src = m;
-                gallery.appendChild(img);
-              }
-            });
-            artDiv.appendChild(gallery);
-          }
+        card.appendChild(contentDiv);
+        container.appendChild(card);
+      });
 
-          container.appendChild(artDiv);
-        });
-
-      } catch (err) {
-        console.error('Error loading news:', err);
-      }
+    } catch (err) {
+      console.error('Error loading news:', err);
+      const container = document.getElementById('news-container');
+      container.innerHTML = '<p>שגיאה בטעינת הכתבות. נסו לרענן את הדף.</p>';
     }
+  }
 
-    loadNews();
-  </script>
+  loadNews();
+</script>
+
 </body>
 </html>
