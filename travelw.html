@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>אזהרות מסע ✈️</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אזהרות מסע – מל״ל</title>
 
   <style>
     body {
@@ -11,39 +11,45 @@
       background: #cce7ff;
       margin: 0;
       padding: 0;
-      color: #333;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px 10px;
+      padding: 30px 20px;
       font-size: 2.2em;
       font-weight: bold;
       color: #004080;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
       padding: 20px;
     }
 
-    /* 🔍 שורת חיפוש */
+    /* חיפוש */
     .search-box {
+      position: relative;
+    }
+
+    input {
       width: 100%;
       padding: 14px;
       font-size: 1.1em;
-      border-radius: 8px;
-      border: 1px solid #999;
+      border-radius: 10px;
+      border: 2px solid #004080;
       outline: none;
     }
 
     .suggestions {
-      background: #fff;
-      border-radius: 8px;
-      margin-top: 5px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      overflow: hidden;
+      position: absolute;
+      width: 100%;
+      background: white;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 100;
     }
 
     .suggestion {
@@ -55,29 +61,26 @@
       background: #e6f2ff;
     }
 
-    /* 📄 תוצאה */
-    .result-box {
+    /* תוצאה */
+    .result {
       margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 1.05em;
       line-height: 1.6;
-      font-size: 1em;
-      white-space: pre-line;
-      color: #000;
+      color: black;
+      display: none;
     }
 
-    /* 🎨 צבעים לפי רמת איום */
-    .level-1 { background: #b9f6ca; }
-    .level-2 { background: #ffe082; }
-    .level-3 { background: #ffccbc; }
-    .level-4-ban { background: #000; color: #fff; }
-    .level-4-avoid { background: #ff8a80; }
+    .green { background: #b9f6ca; }
+    .green-yellow { background: #e6f9b5; }
+    .yellow { background: #fff3b0; }
+    .orange-red { background: #ffcc99; }
+    .red { background: #ff9999; }
+    .dark-red { background: #cc4444; }
+    .black { background: #000; color: white; }
 
-    .combined-low { background: linear-gradient(135deg, #b9f6ca, #ffe082); }
-    .combined-mid { background: linear-gradient(135deg, #ffe082, #ff8a80); }
-    .combined-high { background: linear-gradient(135deg, #ff8a80, #d32f2f); }
-
-    /* 🔹 אייקונים צפים */
+    /* אייקונים צפים */
     .social-floating {
       position: fixed;
       bottom: 20px;
@@ -92,8 +95,6 @@
       width: 48px;
       height: 48px;
       cursor: pointer;
-      border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
       transition: transform 0.2s;
     }
 
@@ -105,22 +106,18 @@
 
 <body>
 
-<header>אזהרות מסע לפי מדינה ✈️</header>
+<header>אזהרות מסע – מל״ל</header>
 
 <div class="container">
-  <input
-    type="text"
-    id="search"
-    class="search-box"
-    placeholder="הקלד שם מדינה…"
-    autocomplete="off"
-  />
+  <div class="search-box">
+    <input id="search" placeholder="הקלד שם מדינה בעברית">
+    <div id="suggestions" class="suggestions"></div>
+  </div>
 
-  <div id="suggestions" class="suggestions"></div>
-  <div id="result"></div>
+  <div id="result" class="result"></div>
 </div>
 
-<!-- 🔹 אייקונים צפים -->
+<!-- אייקונים -->
 <div class="social-floating">
   <a href="https://t.me/AviationNewsIL" target="_blank">
     <img src="telegram_1.png" alt="Telegram">
@@ -131,105 +128,92 @@
 </div>
 
 <script>
-  const API_URL =
-    "https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=5000";
+let data = [];
+const input = document.getElementById("search");
+const suggestionsBox = document.getElementById("suggestions");
+const resultBox = document.getElementById("result");
 
-  let records = [];
-
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
-      records = data.result.records.filter(r => r["משרד"] === "מל\"ל");
-    });
-
-  const searchInput = document.getElementById("search");
-  const suggestionsDiv = document.getElementById("suggestions");
-  const resultDiv = document.getElementById("result");
-
-  searchInput.addEventListener("input", () => {
-    let value = searchInput.value.replace(/[^א-ת\s]/g, "");
-    searchInput.value = value;
-
-    suggestionsDiv.innerHTML = "";
-    resultDiv.innerHTML = "";
-
-    if (!value) return;
-
-    const matches = records
-      .map(r => r.country)
-      .filter(c => c.startsWith(value))
-      .sort()
-      .slice(0, 5);
-
-    if (!matches.length) {
-      showNoResults();
-      return;
-    }
-
-    matches.forEach(country => {
-      const div = document.createElement("div");
-      div.className = "suggestion";
-      div.textContent = country;
-      div.onclick = () => selectCountry(country);
-      suggestionsDiv.appendChild(div);
-    });
+/* טעינת נתונים */
+fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=500")
+  .then(res => res.json())
+  .then(json => {
+    data = json.result.records
+      .filter(r => r["משרד"] === "מל\"ל");
   });
 
-  function selectCountry(country) {
-    suggestionsDiv.innerHTML = "";
-    searchInput.value = country;
+/* רק אותיות */
+input.addEventListener("input", e => {
+  e.target.value = e.target.value.replace(/[^א-ת\s]/g, "");
+  showSuggestions(e.target.value.trim());
+});
 
-    const record = records.find(r => r.country === country);
-    if (!record || !record.recommendations) {
-      showNoResults();
-      return;
-    }
+/* הצעות */
+function showSuggestions(value) {
+  suggestionsBox.innerHTML = "";
+  resultBox.style.display = "none";
 
-    const text = formatRecommendations(record.recommendations);
-    const levelClass = detectLevel(record.recommendations);
+  if (!value) return;
 
-    resultDiv.className = "result-box " + levelClass;
-    resultDiv.textContent = text;
+  const matches = data
+    .filter(r => r.country && r.country.startsWith(value))
+    .sort((a, b) => a.country.localeCompare(b.country))
+    .slice(0, 5);
+
+  if (!matches.length) {
+    showNoResults();
+    return;
   }
 
-  function showNoResults() {
-    resultDiv.className = "result-box level-1";
-    resultDiv.textContent =
-      "אין תוצאות, ניתן לבקר באתר המל\"ל לחיפוש מעמיק";
+  matches.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "suggestion";
+    div.textContent = item.country;
+    div.onclick = () => selectCountry(item);
+    suggestionsBox.appendChild(div);
+  });
+}
+
+/* בחירה */
+function selectCountry(item) {
+  suggestionsBox.innerHTML = "";
+  input.value = item.country;
+
+  const text = item.recommendations || "";
+  let cls = "green";
+
+  if (text.includes("אין אזהרות")) {
+    cls = "green";
   }
-
-  function detectLevel(text) {
-    if (text.includes("חל איסור על נסיעה")) return "level-4-ban";
-    if (text.includes("להימנע מהגעה")) return "level-4-avoid";
-
-    const levels = [...text.matchAll(/רמה\s*(\d)/g)].map(m => parseInt(m[1]));
-    if (levels.length > 1) {
+  else if (text.includes("רמה 4") && text.includes("חל איסור")) {
+    cls = "black";
+  }
+  else if (text.includes("רמה 4") && text.includes("להימנע")) {
+    cls = "dark-red";
+  }
+  else {
+    const levels = [...text.matchAll(/רמה\s*(\d)/g)].map(m => +m[1]);
+    if (levels.length) {
       const max = Math.max(...levels);
-      if (max <= 2) return "combined-low";
-      if (max === 3) return "combined-mid";
-      return "combined-high";
+      const avg = levels.reduce((a,b)=>a+b,0)/levels.length;
+
+      if (max === 3) cls = avg > 2.5 ? "red" : "orange-red";
+      else if (max === 2) cls = avg > 1.5 ? "yellow" : "green-yellow";
+      else cls = "green";
     }
-
-    if (text.includes("רמה 3")) return "level-3";
-    if (text.includes("רמה 2")) return "level-2";
-    return "level-1";
   }
 
-  function formatRecommendations(text) {
-    let formatted = text.trim();
+  resultBox.className = "result " + cls;
+  resultBox.textContent = text || "אין מידע זמין";
+  resultBox.style.display = "block";
+}
 
-    formatted = formatted.replace(
-      /רמת איום משולבת:\s*/g,
-      "רמת איום משולבת:\n"
-    );
-
-    formatted = formatted.replace(
-      /\. (רמה\s*\d|ללא אזהרת מסע)/g,
-      ".\n$1"
-    );
-
-    return formatted;
-  }
+/* אין תוצאות */
+function showNoResults() {
+  suggestionsBox.innerHTML = "";
+  resultBox.className = "result yellow";
+  resultBox.textContent = "אין תוצאות, ניתן לבקר באתר המל״ל לחיפוש מעמיק";
+  resultBox.style.display = "block";
+}
 </script>
 
 </body>
