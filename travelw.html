@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אזהרות מסע ✈️</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #eaf4ff;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+
+  header {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #004080;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .search-box {
+    position: relative;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    border: 2px solid #b0d4ff;
+    outline: none;
+  }
+
+  input[type="text"]:focus {
+    border-color: #004080;
+  }
+
+  .suggestions {
+    background: #fff;
+    border-radius: 8px;
+    margin-top: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  .suggestions div {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .suggestions div:hover {
+    background: #e0f0ff;
+  }
+
+  .result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.05em;
+    line-height: 1.6;
+  }
+
+  /* 🎨 צבעים */
+  .green { background: #c8f7c5; color:#000; }
+  .green-yellow { background: #e6f4b2; color:#000; }
+  .yellow { background: #fff3b0; color:#000; }
+  .orange { background: #ffc078; color:#000; }
+  .orange-red { background: #ff9966; color:#000; }
+  .red { background: #ff6b6b; color:#000; }
+  .dark-red { background: #8b0000; color:#fff; }
+  .black { background: #000; color:#fff; }
+
+  /* 🔹 אייקונים צפים */
+  .social-floating {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 9999;
+  }
+
+  .social-floating img {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: transform 0.2s;
+  }
+
+  .social-floating img:hover {
+    transform: scale(1.1);
+  }
+</style>
+</head>
+
+<body>
+
+<header>אזהרות מסע – המל״ל ✈️</header>
+
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="search" placeholder="הקלד שם מדינה…" autocomplete="off">
+    <div class="suggestions" id="suggestions"></div>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<!-- 🔹 אייקונים צפים -->
+<div class="social-floating">
+  <a href="https://t.me/AviationNewsIL" target="_blank">
+    <img src="telegram_1.png" alt="Telegram">
+  </a>
+  <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank">
+    <img src="whatsapp_1.png" alt="WhatsApp">
+  </a>
+</div>
+
+<script>
+const API_URL =
+  "https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=1000";
+
+let data = [];
+
+fetch(API_URL)
+  .then(res => res.json())
+  .then(json => data = json.result.records);
+
+const input = document.getElementById("search");
+const suggestionsBox = document.getElementById("suggestions");
+const resultBox = document.getElementById("result");
+
+input.addEventListener("input", () => {
+  let val = input.value.trim();
+
+  // רק אותיות
+  if (!/^[a-zA-Zא-ת\s]*$/.test(val)) {
+    input.value = val.replace(/[^a-zA-Zא-ת\s]/g, "");
+    return;
+  }
+
+  suggestionsBox.innerHTML = "";
+  resultBox.innerHTML = "";
+  resultBox.className = "";
+
+  if (!val) return;
+
+  const matches = data
+    .filter(r =>
+      r["משרד"] === "מל\"ל" &&
+      r.country &&
+      r.country.startsWith(val)
+    )
+    .sort((a, b) => a.country.localeCompare(b.country, "he"))
+    .slice(0, 5);
+
+  if (!matches.length) {
+    resultBox.className = "result yellow";
+    resultBox.textContent =
+      "אין תוצאות, ניתן לבקר באתר המל״ל לחיפוש מעמיק";
+    return;
+  }
+
+  matches.forEach(item => {
+    const div = document.createElement("div");
+    div.textContent = item.country;
+    div.onclick = () => selectCountry(item);
+    suggestionsBox.appendChild(div);
+  });
+});
+
+function selectCountry(item) {
+  suggestionsBox.innerHTML = "";
+  input.value = item.country;
+
+  const text = item.recommendations || "";
+  let cls = "green";
+
+  const levels = [...text.matchAll(/רמה\s*(\d)/g)]
+    .map(m => parseInt(m[1]));
+
+  if (text.includes("אין אזהרות")) {
+    cls = "green";
+  } else if (levels.length) {
+    const max = Math.max(...levels);
+    const avg = levels.reduce((a,b)=>a+b,0)/levels.length;
+
+    if (max === 4) cls = avg >= 3 ? "black" : "dark-red";
+    else if (max === 3) cls = avg >= 2.5 ? "red" : "orange-red";
+    else if (max === 2) cls = avg >= 1.5 ? "yellow" : "green-yellow";
+    else cls = "green";
+  }
+
+  resultBox.className = "result " + cls;
+  resultBox.textContent = text || "אין מידע זמין";
+}
+</script>
+
+</body>
+</html>
