@@ -27,7 +27,6 @@
       padding: 20px;
     }
 
-    /* חיפוש */
     .search-box {
       position: relative;
     }
@@ -61,7 +60,6 @@
       background: #e6f2ff;
     }
 
-    /* תוצאה */
     .result {
       margin-top: 20px;
       padding: 20px;
@@ -70,6 +68,7 @@
       line-height: 1.6;
       color: black;
       display: none;
+      white-space: pre-line;
     }
 
     .green { background: #b9f6ca; }
@@ -80,7 +79,6 @@
     .dark-red { background: #cc4444; }
     .black { background: #000; color: white; }
 
-    /* אייקונים צפים */
     .social-floating {
       position: fixed;
       bottom: 20px;
@@ -117,7 +115,6 @@
   <div id="result" class="result"></div>
 </div>
 
-<!-- אייקונים -->
 <div class="social-floating">
   <a href="https://t.me/AviationNewsIL" target="_blank">
     <img src="telegram_1.png" alt="Telegram">
@@ -133,25 +130,20 @@ const input = document.getElementById("search");
 const suggestionsBox = document.getElementById("suggestions");
 const resultBox = document.getElementById("result");
 
-/* טעינת נתונים */
 fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=500")
   .then(res => res.json())
   .then(json => {
-    data = json.result.records
-      .filter(r => r["משרד"] === "מל\"ל");
+    data = json.result.records.filter(r => r["משרד"] === "מל\"ל");
   });
 
-/* רק אותיות */
 input.addEventListener("input", e => {
   e.target.value = e.target.value.replace(/[^א-ת\s]/g, "");
   showSuggestions(e.target.value.trim());
 });
 
-/* הצעות */
 function showSuggestions(value) {
   suggestionsBox.innerHTML = "";
   resultBox.style.display = "none";
-
   if (!value) return;
 
   const matches = data
@@ -173,25 +165,40 @@ function showSuggestions(value) {
   });
 }
 
-/* בחירה */
+/* ⭐ עיבוד טקסט לרמות משולבות */
+function formatRecommendations(text) {
+  if (!text) return "";
+
+  let formatted = text;
+
+  if (formatted.includes("רמת איום משולבת")) {
+    formatted = formatted.replace("רמת איום משולבת:", "רמת איום משולבת:\n");
+    formatted = formatted.replace(/(?=(רמה\s*\d|ללא אזהרת מסע))/g, "\n");
+  }
+
+  return formatted.trim();
+}
+
 function selectCountry(item) {
   suggestionsBox.innerHTML = "";
   input.value = item.country;
 
-  const text = item.recommendations || "";
+  const rawText = item.recommendations || "";
+  const text = formatRecommendations(rawText);
+
   let cls = "green";
 
-  if (text.includes("אין אזהרות")) {
+  if (rawText.includes("אין אזהרות")) {
     cls = "green";
   }
-  else if (text.includes("רמה 4") && text.includes("חל איסור")) {
+  else if (rawText.includes("רמה 4") && rawText.includes("חל איסור")) {
     cls = "black";
   }
-  else if (text.includes("רמה 4") && text.includes("להימנע")) {
+  else if (rawText.includes("רמה 4") && rawText.includes("להימנע")) {
     cls = "dark-red";
   }
   else {
-    const levels = [...text.matchAll(/רמה\s*(\d)/g)].map(m => +m[1]);
+    const levels = [...rawText.matchAll(/רמה\s*(\d)/g)].map(m => +m[1]);
     if (levels.length) {
       const max = Math.max(...levels);
       const avg = levels.reduce((a,b)=>a+b,0)/levels.length;
@@ -207,7 +214,6 @@ function selectCountry(item) {
   resultBox.style.display = "block";
 }
 
-/* אין תוצאות */
 function showNoResults() {
   suggestionsBox.innerHTML = "";
   resultBox.className = "result yellow";
