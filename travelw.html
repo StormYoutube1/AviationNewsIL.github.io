@@ -3,26 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>אזהרות מסע – מל״ל</title>
+  <title>חיפוש אזהרות מסע לפי מדינה</title>
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #cce7ff;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(180deg, #cce7ff, #eaf4ff);
       margin: 0;
       padding: 0;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px;
-      font-size: 2.2em;
-      font-weight: bold;
-      color: #004080;
+      padding: 35px 20px 20px;
+      font-size: 2.4em;
+      font-weight: 800;
+      color: #003366;
     }
 
     .container {
-      max-width: 700px;
+      max-width: 720px;
       margin: 0 auto;
       padding: 20px;
     }
@@ -30,47 +30,85 @@
     /* חיפוש */
     .search-box {
       position: relative;
+      margin-top: 20px;
     }
 
     input {
       width: 100%;
-      padding: 14px;
-      font-size: 1.1em;
-      border-radius: 10px;
+      padding: 16px;
+      font-size: 1.15em;
+      border-radius: 14px;
       border: 2px solid #004080;
       outline: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input:focus {
+      border-color: #0066cc;
     }
 
     .suggestions {
       position: absolute;
       width: 100%;
       background: white;
-      border-radius: 0 0 10px 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 0 0 14px 14px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
       max-height: 220px;
       overflow-y: auto;
       z-index: 100;
     }
 
     .suggestion {
-      padding: 10px;
+      padding: 12px;
       cursor: pointer;
+      font-weight: 500;
     }
 
     .suggestion:hover {
       background: #e6f2ff;
     }
 
+    /* מטוס */
+    .plane {
+      display: none;
+      position: fixed;
+      top: 40%;
+      right: -80px;
+      font-size: 42px;
+      animation: fly 2.5s linear forwards;
+      z-index: 5000;
+    }
+
+    @keyframes fly {
+      from { right: -80px; }
+      to { right: 110%; }
+    }
+
     /* תוצאה */
     .result {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 12px;
-      font-size: 1.05em;
-      line-height: 1.6;
-      color: black;
+      margin-top: 30px;
+      padding: 24px;
+      border-radius: 16px;
+      font-size: 1.15em;
+      line-height: 1.8;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       display: none;
       white-space: pre-line;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #333;
+      text-align: center;
+      display: none;
     }
 
     .green { background: #b9f6ca; }
@@ -78,10 +116,10 @@
     .yellow { background: #fff3b0; }
     .orange-red { background: #ffcc99; }
     .red { background: #ff9999; }
-    .dark-red { background: #cc4444; }
+    .dark-red { background: #cc4444; color: white; }
     .black { background: #000; color: white; }
 
-    /* אייקונים צפים */
+    /* אייקונים צפים – לא נוגעים */
     .social-floating {
       position: fixed;
       bottom: 20px;
@@ -107,7 +145,7 @@
 
 <body>
 
-<header>אזהרות מסע – מל״ל</header>
+<header>חיפוש אזהרות מסע לפי מדינה</header>
 
 <div class="container">
   <div class="search-box">
@@ -116,7 +154,12 @@
   </div>
 
   <div id="result" class="result"></div>
+  <div id="note" class="note">
+    אזהרות מסע אלה הן לפי המל״ל, יש לשים לב גם לאזהרות מסע מטעם משרד הבריאות
+  </div>
 </div>
+
+<div class="plane" id="plane">✈️</div>
 
 <!-- אייקונים -->
 <div class="social-floating">
@@ -133,37 +176,30 @@ let data = [];
 const input = document.getElementById("search");
 const suggestionsBox = document.getElementById("suggestions");
 const resultBox = document.getElementById("result");
+const note = document.getElementById("note");
+const plane = document.getElementById("plane");
 
-/* טעינת נתונים */
+/* נתונים */
 fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=500")
   .then(res => res.json())
   .then(json => {
-    data = json.result.records
-      .filter(r => r["משרד"] === "מל\"ל");
+    data = json.result.records.filter(r => r["משרד"] === "מל\"ל");
   });
 
-/* רק אותיות */
 input.addEventListener("input", e => {
   e.target.value = e.target.value.replace(/[^א-ת\s]/g, "");
   showSuggestions(e.target.value.trim());
 });
 
-/* הצעות */
 function showSuggestions(value) {
   suggestionsBox.innerHTML = "";
   resultBox.style.display = "none";
-
+  note.style.display = "none";
   if (!value) return;
 
   const matches = data
     .filter(r => r.country && r.country.startsWith(value))
-    .sort((a, b) => a.country.localeCompare(b.country))
     .slice(0, 5);
-
-  if (!matches.length) {
-    showNoResults();
-    return;
-  }
 
   matches.forEach(item => {
     const div = document.createElement("div");
@@ -174,49 +210,33 @@ function showSuggestions(value) {
   });
 }
 
-/* בחירה */
 function selectCountry(item) {
   suggestionsBox.innerHTML = "";
   input.value = item.country;
 
-  const text = item.recommendations || "";
-  let cls = "green";
+  plane.style.display = "block";
+  plane.style.animation = "none";
+  plane.offsetHeight;
+  plane.style.animation = "fly 2.5s linear forwards";
 
-  if (text.includes("אין אזהרות")) {
-    cls = "green";
-  }
-  else if (text.includes("רמה 4") && text.includes("חל איסור")) {
-    cls = "black";
-  }
-  else if (text.includes("רמה 4") && text.includes("להימנע")) {
-    cls = "dark-red";
-  }
-  else {
-    const levels = [...text.matchAll(/רמה\s*(\d)/g)].map(m => +m[1]);
-    if (levels.length) {
-      const max = Math.max(...levels);
-      const avg = levels.reduce((a,b)=>a+b,0)/levels.length;
+  setTimeout(() => {
+    plane.style.display = "none";
 
-      if (max === 3) cls = avg > 2.5 ? "red" : "orange-red";
-      else if (max === 2) cls = avg > 1.5 ? "yellow" : "green-yellow";
-      else cls = "green";
-    }
-  }
+    const text = item.recommendations || "";
+    let cls = "green";
 
-  resultBox.className = "result " + cls;
-  const formattedText = text
-  ? text.replace(/\.(?!\s*$)/g, '.\n')
-    : "אין מידע זמין";
-  resultBox.textContent = formattedText;
-  resultBox.style.display = "block";
-}
+    if (text.includes("רמה 4") && text.includes("חל איסור")) cls = "black";
+    else if (text.includes("רמה 4")) cls = "dark-red";
 
-/* אין תוצאות */
-function showNoResults() {
-  suggestionsBox.innerHTML = "";
-  resultBox.className = "result yellow";
-  resultBox.textContent = "אין תוצאות, ניתן לבקר באתר המל״ל לחיפוש מעמיק";
-  resultBox.style.display = "block";
+    const formattedText = text
+      ? text.replace(/\.(?!\s*$)/g, '.\n')
+      : "אין מידע זמין";
+
+    resultBox.className = "result " + cls;
+    resultBox.textContent = formattedText;
+    resultBox.style.display = "block";
+    note.style.display = "block";
+  }, 2500);
 }
 </script>
 
