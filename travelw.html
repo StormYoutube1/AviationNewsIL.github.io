@@ -70,6 +70,7 @@
       line-height: 1.6;
       color: black;
       display: none;
+      white-space: pre-line;
     }
 
     .green { background: #b9f6ca; }
@@ -203,7 +204,10 @@ function selectCountry(item) {
   }
 
   resultBox.className = "result " + cls;
-  resultBox.textContent = text || "אין מידע זמין";
+  const formattedText = text
+  ? text.replace(/\.(?!\s*$)/g, '.\n')
+    : "אין מידע זמין";
+  resultBox.textContent = formattedText;
   resultBox.style.display = "block";
 }
 
