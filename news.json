@@ -1,5 +1,16 @@
 [
   {
+    "id": "906b1d28",
+    "title": "כתבה אוטומטית הועלתה! מזהה הכתבה 7a97a9e3",
+    "subtitle": null,
+    "main_image": "https://example.com/default.jpg",
+    "content": "",
+    "media": [],
+    "writer": "חדשות תעופה ✈",
+    "timestamp": "28 בינואר 2026 | 18:13",
+    "position": 1
+  },
+  {
     "id": "0607345e",
     "title": "כתבה אוטומטית הועלתה! מזהה הכתבה 6f8b81df",
     "subtitle": null,
@@ -8,7 +19,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 1
+    "position": 2
   },
   {
     "id": "ca98db5d",
@@ -19,7 +30,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 2
+    "position": 3
   },
   {
     "id": "7a97a9e3",
@@ -30,7 +41,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 3
+    "position": 4
   },
   {
     "id": "6f8b81df",
@@ -41,7 +52,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 4
+    "position": 5
   },
   {
     "id": "b4ace53d",
@@ -52,7 +63,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 5
+    "position": 6
   },
   {
     "id": "3af9f5e8",
@@ -67,7 +78,7 @@
     ],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:13",
-    "position": 6
+    "position": 7
   },
   {
     "id": "7d0f87e3",
@@ -80,7 +91,7 @@
     ],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:12",
-    "position": 7
+    "position": 8
   },
   {
     "id": "d61dfc46",
@@ -91,12 +102,12 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 18:12",
-    "position": 8
+    "position": 9
   },
   {
     "title": "למרות הדיווחים - לופטהנזה לא ביטלה טיסות לישראל (לפחות כרגע)",
     "main_image": "https://files.catbox.moe/ndhorz.jpg",
-    "position": 10,
+    "position": 11,
     "id": "b2c36f87",
     "content": "",
     "media": [],
@@ -106,7 +117,7 @@
   {
     "title": "לא ממש ברור: ITA Airways מבטלת הלילה במפתיע את הטיסה מרומא לתל אביב",
     "main_image": "https://files.catbox.moe/o8hjly.jpg",
-    "position": 11,
+    "position": 12,
     "id": "280b0412",
     "content": "",
     "media": [],
