@@ -1,5 +1,18 @@
 [
   {
+    "id": "24fbb200",
+    "title": "כתבה אוטומטית",
+    "subtitle": null,
+    "main_image": "https://example.com/default.jpg",
+    "content": "",
+    "media": [
+      "https://files.catbox.moe/fbf0dx.mp4"
+    ],
+    "writer": "חדשות תעופה ✈",
+    "timestamp": "28 בינואר 2026 | 19:19",
+    "position": 1
+  },
+  {
     "id": "8aae6b78",
     "title": "אופסי! אירוע חריג בהמראה מלאס וגאס מטוס איירבוס A350 של בריטיש איירווייז איבד את אחד מגלגליו",
     "subtitle": null,
@@ -8,7 +21,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:19",
-    "position": 1
+    "position": 2
   },
   {
     "id": "22d19c9a",
@@ -19,7 +32,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:15",
-    "position": 2
+    "position": 3
   },
   {
     "id": "3719682b",
@@ -31,7 +44,7 @@
     ],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:13",
-    "position": 3
+    "position": 4
   },
   {
     "id": "41a1f0c9",
@@ -41,7 +54,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:12",
-    "position": 4
+    "position": 5
   },
   {
     "id": "6e6eab60",
@@ -52,7 +65,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:10",
-    "position": 5
+    "position": 6
   },
   {
     "id": "2507849f",
@@ -63,7 +76,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:07",
-    "position": 6
+    "position": 7
   },
   {
     "id": "9807217b",
@@ -74,7 +87,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:04",
-    "position": 7
+    "position": 8
   },
   {
     "id": "78e75e0e",
@@ -85,12 +98,12 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:01",
-    "position": 8
+    "position": 9
   },
   {
     "title": "למרות הדיווחים - לופטהנזה לא ביטלה טיסות לישראל (לפחות כרגע)",
     "main_image": "https://files.catbox.moe/ndhorz.jpg",
-    "position": 37,
+    "position": 38,
     "id": "b2c36f87",
     "content": "",
     "media": [],
@@ -100,7 +113,7 @@
   {
     "title": "לא ממש ברור: ITA Airways מבטלת הלילה במפתיע את הטיסה מרומא לתל אביב",
     "main_image": "https://files.catbox.moe/o8hjly.jpg",
-    "position": 38,
+    "position": 39,
     "id": "280b0412",
     "content": "",
     "media": [],
