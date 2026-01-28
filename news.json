@@ -1,18 +1,5 @@
 [
   {
-    "id": "24fbb200",
-    "title": "כתבה אוטומטית",
-    "subtitle": null,
-    "main_image": "https://example.com/default.jpg",
-    "content": "",
-    "media": [
-      "https://files.catbox.moe/fbf0dx.mp4"
-    ],
-    "writer": "חדשות תעופה ✈",
-    "timestamp": "28 בינואר 2026 | 19:19",
-    "position": 2
-  },
-  {
     "id": "8aae6b78",
     "title": "אופסי! אירוע חריג בהמראה מלאס וגאס מטוס איירבוס A350 של בריטיש איירווייז איבד את אחד מגלגליו",
     "subtitle": null,
