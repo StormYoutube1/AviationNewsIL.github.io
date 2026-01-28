@@ -1,5 +1,20 @@
 [
   {
+    "id": "1b889833",
+    "title": "כתבה אוטומטית",
+    "subtitle": null,
+    "main_image": "https://files.catbox.moe/27j8fp.jpg",
+    "content": "",
+    "media": [
+      "https://files.catbox.moe/fczp96.jpg",
+      "https://files.catbox.moe/prr6eb.jpg",
+      "https://files.catbox.moe/b9m3al.jpg"
+    ],
+    "writer": "חדשות תעופה ✈",
+    "timestamp": "28 בינואר 2026 | 19:19",
+    "position": 1
+  },
+  {
     "id": "24fbb200",
     "title": "כתבה אוטומטית",
     "subtitle": null,
@@ -10,7 +25,7 @@
     ],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:19",
-    "position": 1
+    "position": 2
   },
   {
     "id": "8aae6b78",
@@ -21,7 +36,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:19",
-    "position": 2
+    "position": 3
   },
   {
     "id": "22d19c9a",
@@ -32,7 +47,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:15",
-    "position": 3
+    "position": 4
   },
   {
     "id": "3719682b",
@@ -44,7 +59,7 @@
     ],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:13",
-    "position": 4
+    "position": 5
   },
   {
     "id": "41a1f0c9",
@@ -54,7 +69,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:12",
-    "position": 5
+    "position": 6
   },
   {
     "id": "6e6eab60",
@@ -65,7 +80,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:10",
-    "position": 6
+    "position": 7
   },
   {
     "id": "2507849f",
@@ -76,7 +91,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:07",
-    "position": 7
+    "position": 8
   },
   {
     "id": "9807217b",
@@ -87,7 +102,7 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:04",
-    "position": 8
+    "position": 9
   },
   {
     "id": "78e75e0e",
@@ -98,12 +113,12 @@
     "media": [],
     "writer": "חדשות תעופה ✈",
     "timestamp": "28 בינואר 2026 | 19:01",
-    "position": 9
+    "position": 10
   },
   {
     "title": "למרות הדיווחים - לופטהנזה לא ביטלה טיסות לישראל (לפחות כרגע)",
     "main_image": "https://files.catbox.moe/ndhorz.jpg",
-    "position": 38,
+    "position": 39,
     "id": "b2c36f87",
     "content": "",
     "media": [],
@@ -113,7 +128,7 @@
   {
     "title": "לא ממש ברור: ITA Airways מבטלת הלילה במפתיע את הטיסה מרומא לתל אביב",
     "main_image": "https://files.catbox.moe/o8hjly.jpg",
-    "position": 39,
+    "position": 40,
     "id": "280b0412",
     "content": "",
     "media": [],
