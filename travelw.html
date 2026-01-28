@@ -53,8 +53,8 @@
       background: white;
       border-radius: 0 0 14px 14px;
       box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-      max-height: 220px;
-      overflow-y: auto;
+      max-height: none;   
+      overflow: hidden;  
       z-index: 100;
     }
 
@@ -217,7 +217,7 @@ function selectCountry(item) {
   plane.style.display = "block";
   plane.style.animation = "none";
   plane.offsetHeight;
-  plane.style.animation = "fly 2.5s linear forwards";
+  plane.style.animation = "fly 1.5s linear forwards";
 
   setTimeout(() => {
     plane.style.display = "none";
@@ -236,7 +236,7 @@ function selectCountry(item) {
     resultBox.textContent = formattedText;
     resultBox.style.display = "block";
     note.style.display = "block";
-  }, 2500);
+  }, 1500);
 }
 </script>
 
