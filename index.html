@@ -73,59 +73,72 @@
       background: #0066cc;
     }
 
+    /* 🔹 קלפי כתבות מעוצבים יותר */
     .article-card {
+      display: flex;
       background: #fff;
       border-radius: 12px;
       overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
       transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
       text-decoration: none;
       color: inherit;
+      height: 120px;
     }
 
     .article-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
     }
 
     .article-card img {
-      width: 100%;
-      max-height: 250px;
+      width: 180px;
+      height: 100%;
       object-fit: cover;
-      display: block;
+      flex-shrink: 0;
     }
 
     .article-content {
-      padding: 15px 20px;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
     }
 
     .article-content h2 {
-      margin: 0 0 8px 0;
-      font-size: 1.6em;
+      margin: 0;
+      font-size: 1.3em;
       color: #004080;
+      line-height: 1.2em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .article-content h3 {
       margin: 0;
-      font-size: 1.1em;
+      font-size: 1em;
       color: #555;
       font-weight: normal;
+      line-height: 1.2em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .article-content p {
-      font-size: 0.9em;
+      font-size: 0.8em;
       color: #777;
-      margin-top: 5px;
+      margin: 0;
     }
 
     @media (max-width: 600px) {
-      .article-content h2 { font-size: 1.3em; }
-      .article-content h3 { font-size: 1em; }
-      .search-bar { flex-direction: column; }
+      .article-card { flex-direction: column; height: auto; }
+      .article-card img { width: 100%; height: 180px; }
+      .article-content h2 { font-size: 1.2em; white-space: normal; }
+      .article-content h3 { font-size: 0.95em; white-space: normal; }
     }
 
     /* 🔹 אייקונים צפים – טלגרם + ווצאפ */
@@ -162,7 +175,7 @@
   <div class="search-bar">
     <input type="text" id="search-input" placeholder="חיפוש...">
     <select id="search-field">
-      <option value="">בחר חיפוש</option>
+      <option value="">חפש לפי...</option>
       <option value="content">בתוכן הכתבה</option>
       <option value="title">בכותרת</option>
     </select>
@@ -213,7 +226,6 @@ function populateTagSelect() {
             article.tags.forEach(t => tagsSet.add(t));
         }
     });
-    // רוקן קודם
     tagSelect.innerHTML = '<option value="">בחר תג</option>';
     Array.from(tagsSet).sort().forEach(tag => {
         const opt = document.createElement('option');
@@ -226,6 +238,11 @@ function populateTagSelect() {
 function displayNews(newsList) {
     const container = document.getElementById('news-container');
     container.innerHTML = '';
+
+    if(newsList.length === 0){
+      container.innerHTML = '<p>לא נמצאו כתבות תואמות.</p>';
+      return;
+    }
 
     newsList.forEach(article => {
         const card = document.createElement('a');
@@ -265,14 +282,15 @@ function performSearch() {
     const field = document.getElementById('search-field').value;
     const tag = document.getElementById('tag-select').value;
 
-    // בדיקה: אם בחר בשדה חיפוש, הטקסט חייב להיות מלא
+    // אם בחר בשדה חיפוש (title/content), חייב להיות טקסט
     if((field === 'title' || field === 'content') && !query) {
         alert('אנא מלאו את שורת החיפוש!');
         return;
     }
 
+    // אם לא בחר בשום דבר – תראה את כל הכתבות
     if(!field && !tag) {
-        alert('אנא בחרו לפחות חיפוש או תג!');
+        displayNews(allNews);
         return;
     }
 
