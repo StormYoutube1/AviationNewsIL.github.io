@@ -29,66 +29,55 @@
       padding: 20px;
     }
 
-    /* 🔹 שורת חיפוש */
+    /* 🔹 שורת חיפוש עם אייקון משמאל ותיבות נפתחות */
     .search-bar {
       display: flex;
-      flex-wrap: nowrap; /* כל הפריטים בשורה אחת */
-      gap: 10px;
-      margin-bottom: 30px;
-      align-items: center;
       justify-content: center;
-      padding: 12px 20px;
-      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    .search-inner {
+      display: flex;
+      align-items: center;
       background: #e6f2ff;
+      padding: 12px 15px;
+      border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0,64,128,0.15);
+      gap: 10px;
+      width: 100%;
+      max-width: 900px;
     }
 
-    .search-bar input[type="text"] {
-      padding: 14px 15px;
-      font-size: 1em;
-      border-radius: 12px;
-      border: 1px solid #aaa;
-      flex: 1 1 300px;
-      min-width: 200px;
-      transition: box-shadow 0.2s, border 0.2s;
+    .search-inner .search-icon {
+      font-size: 1.5em;
+      color: #004080;
+      cursor: pointer;
     }
 
-    .search-bar input[type="text"]:focus {
-      outline: none;
-      border-color: #004080;
-      box-shadow: 0 0 8px rgba(0,64,128,0.3);
-    }
-
-    .search-bar select {
+    .search-inner input[type="text"] {
+      flex: 1 1 auto;
       padding: 12px 15px;
       border-radius: 12px;
       border: 1px solid #aaa;
-      background: #fff;
       font-size: 1em;
-      cursor: pointer;
-      min-width: 150px;
-      transition: box-shadow 0.2s, border 0.2s;
     }
 
-    .search-bar select:focus {
+    .search-inner select {
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 1px solid #aaa;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .search-inner input[type="text"]:focus,
+    .search-inner select:focus {
       outline: none;
       border-color: #004080;
       box-shadow: 0 0 8px rgba(0,64,128,0.3);
     }
 
-    .search-bar .search-icon {
-      font-size: 1.6em;
-      color: #004080;
-      cursor: pointer;
-      padding: 10px;
-      transition: transform 0.2s;
-    }
-
-    .search-bar .search-icon:hover {
-      transform: scale(1.2);
-    }
-
-    /* 🔹 קלפי כתבות מעוצבים יותר */
+    /* 🔹 קלפי כתבות מעוצבים */
     .article-card {
       display: flex;
       background: #fff;
@@ -154,7 +143,7 @@
       .article-card img { width: 100%; height: 180px; }
       .article-content h2 { font-size: 1.2em; }
       .article-content h3 { font-size: 0.95em; }
-      .search-bar { flex-wrap: wrap; justify-content: center; }
+      .search-inner { flex-wrap: wrap; justify-content: center; }
     }
 
     /* 🔹 אייקונים צפים – טלגרם + ווצאפ */
@@ -189,16 +178,18 @@
 
   <!-- 🔹 שורת חיפוש -->
   <div class="search-bar">
-    <input type="text" id="search-input" placeholder="חיפוש...">
-    <select id="search-field">
-      <option value="">חפש לפי...</option>
-      <option value="content">בתוכן הכתבה</option>
-      <option value="title">בכותרת</option>
-    </select>
-    <select id="tag-select">
-      <option value="">בחר תגית</option>
-    </select>
-    <span class="search-icon" onclick="performSearch()">🔍</span>
+    <div class="search-inner">
+      <span class="search-icon" onclick="performSearch()">🔍</span>
+      <input type="text" id="search-input" placeholder="חיפוש...">
+      <select id="search-field">
+        <option value="">חפש לפי...</option>
+        <option value="content">בתוכן הכתבה</option>
+        <option value="title">בכותרת</option>
+      </select>
+      <select id="tag-select">
+        <option value="">בחר תגית</option>
+      </select>
+    </div>
   </div>
 
   <div id="news-container"></div>
