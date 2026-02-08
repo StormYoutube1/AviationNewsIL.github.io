@@ -157,7 +157,6 @@ p {
   display: flex;
   gap: 12px;
   transition: transform 0.3s ease;
-  scroll-behavior: smooth;
 }
 
 .media-carousel img,
@@ -172,7 +171,9 @@ p {
 }
 
 .media-carousel img:hover,
-.media-carousel video:hover { transform: scale(1.05); }
+.media-carousel video:hover {
+  transform: scale(1.05);
+}
 
 /* חצים לקרוסלה */
 .carousel-arrow {
@@ -264,7 +265,11 @@ p {
   box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
-.related-card img { width: 100%; height: 150px; object-fit: cover; }
+.related-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
 
 .related-card .related-content { padding: 10px 12px; }
 
@@ -426,8 +431,6 @@ async function loadArticle() {
       });
     }
 
-    updateCarouselControls();
-
     // Related Articles
     const relatedContainer = document.getElementById('related-articles');
     newsData.filter(a => a.id !== articleId).slice(0,4).forEach(rel => {
@@ -446,77 +449,50 @@ async function loadArticle() {
       relatedContainer.appendChild(card);
     });
 
+    setTimeout(updateCarousel, 100);
   } catch(err) {
     console.error('Error loading article:', err);
     document.getElementById('news-container').innerHTML = "<p>אירעה שגיאה בטעינת הכתבה.</p>";
   }
 }
 
-loadArticle();
-
-// =========================
 // Lightbox סגירה
-// =========================
 document.getElementById('lightbox-overlay').addEventListener('click', e => {
   e.currentTarget.style.display = 'none';
 });
 
 // =========================
-// Carousel Controls & Indicator (תיקון מלא)
+// Carousel Controls & Indicator
+// =========================
 const leftArrow = document.getElementById('carousel-left');
 const rightArrow = document.getElementById('carousel-right');
-const carousel = document.getElementById('media-gallery');
-const indicator = document.getElementById('carousel-indicator');
 
-function updateCarouselControls() {
-  const totalItems = carousel.children.length;
-  if (totalItems === 0) return;
+function updateCarousel() {
+  const wrapperWidth = carousel.parentElement.offsetWidth;
+  const totalWidth = carousel.scrollWidth;
+  const scrollLeft = carousel.scrollLeft;
 
-  const itemWidth = carousel.children[0].offsetWidth + 12;
-  const visibleCount = Math.floor(carousel.clientWidth / itemWidth);
+  // החיצים
+  leftArrow.style.display = scrollLeft <= 0 ? 'none' : 'flex';
+  rightArrow.style.display = scrollLeft + wrapperWidth >= totalWidth - 1 ? 'none' : 'flex';
 
-  if (totalItems > visibleCount) {
-    leftArrow.style.display = 'flex';
-    rightArrow.style.display = 'flex';
-    updateIndicator();
-  } else {
-    leftArrow.style.display = 'none';
-    rightArrow.style.display = 'none';
-    indicator.textContent = '';
-  }
+  // כמה עמודים עוד לגלול
+  const remaining = Math.ceil((totalWidth - wrapperWidth - scrollLeft) / wrapperWidth);
+  indicator.textContent = remaining > 0 ? `עוד ${remaining} עמוד${remaining>1?'ים':''} לגלול` : '';
 }
 
-function updateIndicator() {
-  const itemWidth = carousel.children[0].offsetWidth + 12;
-  const visibleCount = Math.floor(carousel.clientWidth / itemWidth);
-  const totalItems = carousel.children.length;
-
-  const maxScroll = itemWidth * totalItems - carousel.clientWidth;
-  const currentScroll = carousel.scrollLeft;
-
-  const remainingPages = Math.ceil((maxScroll - currentScroll) / itemWidth);
-  if (remainingPages > 0) {
-    indicator.textContent = `עוד ${remainingPages} עמוד${remainingPages > 1 ? 'ים' : ''} לגלול`;
-  } else {
-    indicator.textContent = '';
-  }
+function scrollCarousel(direction) {
+  const wrapperWidth = carousel.parentElement.offsetWidth;
+  carousel.scrollBy({ left: direction * wrapperWidth, behavior: 'smooth' });
 }
 
-// גלילה חכמה לפי רוחב פריט
-leftArrow.addEventListener('click', () => {
-  if (carousel.children.length === 0) return;
-  const scrollAmount = carousel.children[0].offsetWidth + 12;
-  carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-});
+// אירועים
+leftArrow.addEventListener('click', () => scrollCarousel(-1));
+rightArrow.addEventListener('click', () => scrollCarousel(1));
+carousel.addEventListener('scroll', updateCarousel);
+window.addEventListener('resize', updateCarousel);
 
-rightArrow.addEventListener('click', () => {
-  if (carousel.children.length === 0) return;
-  const scrollAmount = carousel.children[0].offsetWidth + 12;
-  carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-});
-
-carousel.addEventListener('scroll', updateIndicator);
-window.addEventListener('resize', updateCarouselControls);
+loadArticle();
 </script>
 
 </body>
