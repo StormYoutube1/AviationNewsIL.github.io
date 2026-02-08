@@ -158,6 +158,13 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   object-fit: contain;
   border-radius: 8px;
 }
+@media (max-width: 600px) {
+  .carousel-item img,
+  .carousel-item video {
+    width: 100%;    /* תמונות יתאימו לרוחב המסך */
+    height: auto;   /* גובה דינמי */
+  }
+}
 
 /* =========================
    Lightbox
