@@ -6,15 +6,19 @@
 <title>אזהרות מסע – חדשות תעופה</title>
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #cce7ff;
-    margin: 0;
-    padding: 0;
-  }
+/* בסיס */
+body {
+  font-family: Arial, sans-serif;
+  background: #cce7ff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* ביטחון כללי */
+}
 
-  /* פס ניווט עליון אחיד */
-  .navbar {
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,156 +56,177 @@
 .navbar-right a {
   color: #fff;
   text-decoration: none;
-  margin-left: 15px;
-  transition: color 0.2s;
   font-weight: 600;
+  transition: color 0.2s;
 }
 
 .navbar-right a:hover {
   color: #b0d4ff;
 }
 
+/* =========================
+   תוכן הדף
+========================= */
+.container {
+  max-width: 720px;
+  margin: 20px auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-  /* שאר הדף */
-  .container {
-    max-width: 720px;
-    margin: 20px auto;
-    padding: 20px;
-  }
+.search-box {
+  position: relative;
+}
 
-  input {
-    width: 100%;
-    padding: 16px;
-    font-size: 1.15em;
-    border-radius: 14px;
-    border: 2px solid #004080;
-    outline: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
+input {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.15em;
+  border-radius: 14px;
+  border: 2px solid #004080;
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-  input:focus {
-    border-color: #0066cc;
-  }
+input:focus {
+  border-color: #0066cc;
+}
 
-  .suggestions {
-    position: absolute;
-    width: 100%;
-    background: white;
-    border-radius: 0 0 14px 14px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    max-height: none;   
-    overflow: hidden;  
-    z-index: 100;
-  }
+/* הצעות */
+.suggestions {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  z-index: 100;
+}
 
-  .suggestion {
-    padding: 12px;
-    cursor: pointer;
-    font-weight: 500;
-  }
+.suggestion {
+  padding: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
 
-  .suggestion:hover {
-    background: #e6f2ff;
-  }
+.suggestion:hover {
+  background: #e6f2ff;
+}
 
-  .plane {
-    display: none;
-    position: fixed;
-    top: 40%;
-    right: -80px;
-    font-size: 42px;
-    animation: fly 1.0s linear forwards;
-    z-index: 5000;
-  }
+/* מטוס */
+.plane {
+  display: none;
+  position: fixed;
+  top: 40%;
+  right: -80px;
+  font-size: 42px;
+  animation: fly 1s linear forwards;
+  z-index: 5000;
+}
 
-  @keyframes fly {
-    from { right: -80px; }
-    to { right: 110%; }
-  }
+@keyframes fly {
+  from { right: -80px; }
+  to { right: 110%; }
+}
 
-  .result {
-    margin-top: 30px;
-    padding: 24px;
-    border-radius: 16px;
-    font-size: 1.15em;
-    line-height: 1.8;
-    font-weight: 600;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    display: none;
-    white-space: pre-line;
-    animation: fadeIn 0.6s ease-in-out;
-  }
+/* תוצאה */
+.result {
+  margin-top: 30px;
+  padding: 24px;
+  border-radius: 16px;
+  font-size: 1.15em;
+  line-height: 1.8;
+  font-weight: 600;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  display: none;
+  white-space: pre-line;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* צבעים */
+.green { background: #b9f6ca; }
+.green-yellow { background: #e6f9b5; }
+.yellow { background: #fff3b0; }
+.orange-red { background: #ffcc99; }
+.red { background: #ff9999; }
+.dark-red { background: #cc4444; color: white; }
+.black { background: #000; color: white; }
 
-  .note {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #333;
-    text-align: center;
-    display: none;
-  }
+.note {
+  margin-top: 10px;
+  font-size: 0.9em;
+  text-align: center;
+  display: none;
+}
 
-  .green { background: #b9f6ca; }
-  .green-yellow { background: #e6f9b5; }
-  .yellow { background: #fff3b0; }
-  .orange-red { background: #ffcc99; }
-  .red { background: #ff9999; }
-  .dark-red { background: #cc4444; color: white; }
-  .black { background: #000; color: white; }
+/* =========================
+   אייקונים צפים
+========================= */
+.social-floating {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
 
-  /* אייקונים צפים */
-  .social-floating {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 9999;
-  }
+.social-floating img {
+  width: 48px;
+  height: 48px;
+  transition: transform 0.2s;
+}
 
-  .social-floating img {
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
+.social-floating img:hover {
+  transform: scale(1.1);
+}
 
-  .social-floating img:hover {
-    transform: scale(1.1);
-  }
-  /* 🔹 ריווח navbar בטלפון בלבד */
+/* =========================
+   📱 מובייל בלבד
+========================= */
 @media (max-width: 600px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* navbar מרווח */
   .navbar {
-    flex-wrap: wrap;          /* מאפשר ירידת שורה */
-    gap: 10px;                /* רווח בין השורות */
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    width: 100%;
+    justify-content: center;
   }
 
   .navbar-right {
-    width: 100%;
-    justify-content: center;  /* קישורים באמצע */
-    margin-top: 6px;          /* רווח מהשם של האתר */
+    margin-top: 6px;
   }
 
-  .navbar-left {
-    width: 100%;
-    justify-content: center;  /* שם האתר באמצע */
+  /* תוכן */
+  .container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  input {
+    font-size: 1em;
+    padding: 14px;
   }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- פס ניווט עליון -->
+<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left">
-    <img src="plane.jpg" alt="לוגו" class="logo">
+    <img src="plane.jpg" class="logo" alt="לוגו">
     <span class="site-name">חדשות תעופה ✈</span>
   </div>
   <div class="navbar-right">
@@ -210,7 +235,7 @@
   </div>
 </div>
 
-<!-- תוכן הדף -->
+<!-- תוכן -->
 <div class="container">
   <div class="search-box">
     <input id="search" placeholder="הקלד שם מדינה בעברית">
@@ -219,19 +244,19 @@
 
   <div id="result" class="result"></div>
   <div id="note" class="note">
-    אזהרות מסע אלה הן לפי המל״ל, יש לשים לב גם לאזהרות מסע מטעם משרד הבריאות
+    אזהרות מסע לפי המל״ל – יש לבדוק גם מול משרד הבריאות
   </div>
 </div>
 
 <div class="plane" id="plane">✈️</div>
 
-<!-- אייקונים צפים -->
+<!-- אייקונים -->
 <div class="social-floating">
   <a href="https://t.me/AviationNewsIL" target="_blank">
-    <img src="telegram_1.png" alt="Telegram">
+    <img src="telegram_1.png">
   </a>
   <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank">
-    <img src="whatsapp_1.png" alt="WhatsApp">
+    <img src="whatsapp_1.png">
   </a>
 </div>
 
@@ -243,7 +268,6 @@ const resultBox = document.getElementById("result");
 const note = document.getElementById("note");
 const plane = document.getElementById("plane");
 
-/* נתונים */
 fetch("https://data.gov.il/api/3/action/datastore_search?resource_id=2a01d234-b2b0-4d46-baa0-cec05c401e7d&limit=500")
   .then(res => res.json())
   .then(json => {
@@ -261,11 +285,7 @@ function showSuggestions(value) {
   note.style.display = "none";
   if (!value) return;
 
-  const matches = data
-    .filter(r => r.country && r.country.startsWith(value))
-    .slice(0, 5);
-
-  matches.forEach(item => {
+  data.filter(r => r.country?.startsWith(value)).slice(0,5).forEach(item => {
     const div = document.createElement("div");
     div.className = "suggestion";
     div.textContent = item.country;
@@ -281,12 +301,12 @@ function selectCountry(item) {
   plane.style.display = "block";
   plane.style.animation = "none";
   plane.offsetHeight;
-  plane.style.animation = "fly 1.0s linear forwards";
+  plane.style.animation = "fly 1s linear forwards";
 
   setTimeout(() => {
     plane.style.display = "none";
 
-    const text = item.recommendations || "";
+    const text = item.recommendations || "אין מידע";
     let cls = "green";
 
     if (text.includes("רמה 4") && text.includes("חל איסור")) cls = "black";
@@ -295,12 +315,8 @@ function selectCountry(item) {
     else if (text.includes("רמה 2")) cls = "yellow";
     else if (text.includes("רמה 1")) cls = "green-yellow";
 
-    const formattedText = text
-      ? text.replace(/\.(?!\s*$)/g, '.\n')
-      : "אין מידע זמין";
-
     resultBox.className = "result " + cls;
-    resultBox.textContent = formattedText;
+    resultBox.textContent = text.replace(/\.(?!\s*$)/g, ".\n");
     resultBox.style.display = "block";
     note.style.display = "block";
   }, 1000);
