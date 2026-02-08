@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(180deg, #cce7ff, #eaf4ff);
+      background: #cce7ff; /* רקע אחיד */
       margin: 0;
       padding: 0;
     }
@@ -53,8 +53,8 @@
       background: white;
       border-radius: 0 0 14px 14px;
       box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-      max-height: none;   
-      overflow: hidden;  
+      max-height: none;
+      overflow: hidden;
       z-index: 100;
     }
 
@@ -75,7 +75,7 @@
       top: 40%;
       right: -80px;
       font-size: 42px;
-      animation: fly 2.5s linear forwards;
+      animation: fly 1s linear forwards;
       z-index: 5000;
     }
 
@@ -111,13 +111,14 @@
       display: none;
     }
 
-    .green { background: #b9f6ca; }
-    .green-yellow { background: #e6f9b5; }
-    .yellow { background: #fff3b0; }
-    .orange-red { background: #ffcc99; }
-    .red { background: #ff9999; }
-    .dark-red { background: #cc4444; color: white; }
-    .black { background: #000; color: white; }
+    /* צבעי אזהרות */
+    .green { background: #b9f6ca; }       /* רמה 1? לא נעשה שימוש */
+    .green-yellow { background: #e6f9b5; } /* רמה 1 */
+    .yellow { background: #fff3b0; }       /* רמה 2 */
+    .orange-red { background: #ffcc99; }   /* רמה 3 */
+    .red { background: #ff9999; }          /* לא בשימוש */
+    .dark-red { background: #cc4444; color: white; } /* רמה 4 */
+    .black { background: #000; color: white; }       /* רמה 4 עם איסור */
 
     /* אייקונים צפים – לא נוגעים */
     .social-floating {
@@ -216,17 +217,20 @@ function selectCountry(item) {
 
   plane.style.display = "block";
   plane.style.animation = "none";
-  plane.offsetHeight;
+  plane.offsetHeight; // force reflow
   plane.style.animation = "fly 1.0s linear forwards";
 
   setTimeout(() => {
     plane.style.display = "none";
 
     const text = item.recommendations || "";
-    let cls = "green";
+    let cls = "green-yellow"; // ברירת מחדל רמה 1
 
     if (text.includes("רמה 4") && text.includes("חל איסור")) cls = "black";
     else if (text.includes("רמה 4")) cls = "dark-red";
+    else if (text.includes("רמה 3")) cls = "orange-red"; // רמה 3
+    else if (text.includes("רמה 2")) cls = "yellow";
+    else if (text.includes("רמה 1")) cls = "green-yellow";
 
     const formattedText = text
       ? text.replace(/\.(?!\s*$)/g, '.\n')
