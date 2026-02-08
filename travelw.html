@@ -15,53 +15,50 @@
 
   /* פס ניווט עליון אחיד */
   .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #004080;
-    color: white;
-    padding: 10px 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  background-color: #004080;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1em;
+}
 
-  .navbar-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  .navbar-left img.logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
+.navbar-left .logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
 
-  .navbar-left span.site-name {
-    font-size: 1.5em;
-    font-weight: bold;
-  }
+.navbar-left .site-name {
+  font-size: 1.2em;
+}
 
-  .navbar-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
-  .navbar-right a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: background 0.2s;
-  }
+.navbar-right a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 15px;
+  transition: color 0.2s;
+}
 
-  .navbar-right a:hover {
-    background: #0066cc;
-  }
+.navbar-right a:hover {
+  color: #b0d4ff;
+}
+
 
   /* שאר הדף */
   .container {
