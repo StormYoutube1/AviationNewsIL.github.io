@@ -145,24 +145,59 @@ p {
 }
 
 /* =========================
-   גלריית מדיה
+   קרוסלת מדיה
 ========================= */
-.media-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+.media-carousel-wrapper {
+  position: relative;
   margin-top: 20px;
+  overflow: hidden;
 }
 
-.media-gallery img,
-.media-gallery video {
-  width: 100%;
+.media-carousel {
+  display: flex;
+  gap: 12px;
+  transition: transform 0.3s ease;
+  scroll-behavior: smooth;
+}
+
+.media-carousel img,
+.media-carousel video {
+  flex: 0 0 auto;
+  width: 300px;
+  height: 170px;
+  object-fit: cover;
   border-radius: 8px;
   transition: transform 0.2s;
 }
 
-.media-gallery img:hover,
-.media-gallery video:hover { transform: scale(1.05); }
+.media-carousel img:hover,
+.media-carousel video:hover {
+  transform: scale(1.05);
+}
+
+/* חצים לקרוסלה */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1.5em;
+  transition: background 0.2s;
+}
+
+.carousel-arrow:hover { background: rgba(0,0,0,0.6); }
+
+.carousel-arrow.left { right: 10px; }
+.carousel-arrow.right { left: 10px; }
 
 /* =========================
    Related Articles
@@ -205,15 +240,9 @@ p {
   object-fit: cover;
 }
 
-.related-card .related-content {
-  padding: 10px 12px;
-}
+.related-card .related-content { padding: 10px 12px; }
 
-.related-card h3 {
-  margin: 0;
-  font-size: 1em;
-  color: #004080;
-}
+.related-card h3 { margin: 0; font-size: 1em; color: #004080; }
 
 /* =========================
    Back link
@@ -255,8 +284,8 @@ p {
    רספונסיבי
 ========================= */
 @media (max-width: 600px) {
-  .media-gallery img,
-  .media-gallery video { max-width: 100%; }
+  .media-carousel img,
+  .media-carousel video { width: 200px; height: 120px; }
   .hero { height: 250px; }
   .hero-text { font-size: 1.5em; }
   .related-card img { height: 120px; }
@@ -292,7 +321,12 @@ p {
 
   <div id="content"></div>
 
-  <div class="media-gallery" id="media-gallery"></div>
+  <!-- Media Carousel -->
+  <div class="media-carousel-wrapper">
+    <div class="carousel-arrow left" id="carousel-left">&#10094;</div>
+    <div class="carousel-arrow right" id="carousel-right">&#10095;</div>
+    <div class="media-carousel" id="media-gallery"></div>
+  </div>
 
   <!-- Related Articles -->
   <div class="related-articles">
@@ -337,19 +371,20 @@ async function loadArticle() {
 
     document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
 
+    // Media Carousel
     const gallery = document.getElementById('media-gallery');
     if (article.media && article.media.length) {
       article.media.forEach(m => {
+        let el;
         if (m.endsWith('.mp4')) {
-          const vid = document.createElement('video');
-          vid.src = m;
-          vid.controls = true;
-          gallery.appendChild(vid);
+          el = document.createElement('video');
+          el.src = m;
+          el.controls = true;
         } else {
-          const img = document.createElement('img');
-          img.src = m;
-          gallery.appendChild(img);
+          el = document.createElement('img');
+          el.src = m;
         }
+        gallery.appendChild(el);
       });
     }
 
@@ -378,6 +413,21 @@ async function loadArticle() {
 }
 
 loadArticle();
+
+// =========================
+// Carousel Controls
+// =========================
+const leftArrow = document.getElementById('carousel-left');
+const rightArrow = document.getElementById('carousel-right');
+const carousel = document.getElementById('media-gallery');
+
+leftArrow.addEventListener('click', () => {
+  carousel.scrollBy({ left: -320, behavior: 'smooth' });
+});
+
+rightArrow.addEventListener('click', () => {
+  carousel.scrollBy({ left: 320, behavior: 'smooth' });
+});
 </script>
 
 </body>
