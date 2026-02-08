@@ -12,11 +12,12 @@ body {
   background: #cce7ff;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* ביטחון כללי */
+  padding-top: 72px; /* מקום ל-navbar קבוע */
+  overflow-x: hidden;
 }
 
 /* =========================
-   NAVBAR
+   NAVBAR (קבוע)
 ========================= */
 .navbar {
   position: fixed;
@@ -24,7 +25,7 @@ body {
   right: 0;
   width: 100%;
   z-index: 10000;
-  
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,6 +34,7 @@ body {
   color: #fff;
   font-weight: 600;
   font-size: 1em;
+  box-sizing: border-box;
 }
 
 .navbar-left {
@@ -40,7 +42,11 @@ body {
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: inherit;
+  color: #fff;
+}
+
+.navbar-left:hover {
+  opacity: 0.9;
 }
 
 .navbar-left .logo {
@@ -195,10 +201,9 @@ input:focus {
 @media (max-width: 600px) {
 
   body {
-    overflow-x: hidden;
+    padding-top: 92px; /* navbar גבוה יותר במובייל */
   }
 
-  /* navbar מרווח */
   .navbar {
     flex-wrap: wrap;
     gap: 10px;
@@ -215,7 +220,6 @@ input:focus {
     margin-top: 6px;
   }
 
-  /* תוכן */
   .container {
     max-width: 100%;
     padding: 12px;
@@ -235,10 +239,9 @@ input:focus {
 <div class="navbar">
   <a href="index.html" class="navbar-left">
     <img src="plane.jpg" class="logo" alt="לוגו">
-    <span class="site-name">חדשות תעופה ✈</span>
-  </a>
     
-
+  </a>
+  <span class="site-name">חדשות תעופה ✈</span>
   <div class="navbar-right">
     <a href="index.html">דף הבית</a>
     <a href="travelw.html">אזהרות מסע</a>
