@@ -40,28 +40,48 @@
     }
 
     .search-bar input[type="text"] {
-      padding: 12px 40px 12px 15px;
+      padding: 12px 15px;
       font-size: 1em;
       border-radius: 12px;
       border: 1px solid #aaa;
-      flex: 1 1 200px;
-      min-width: 150px;
-      background: #f0f8ff;
-      position: relative;
+      flex: 1 1 250px;
+      min-width: 180px;
+      transition: box-shadow 0.2s, border 0.2s;
     }
 
-    .search-bar input[type="text"]::placeholder {
-      color: #888;
+    .search-bar input[type="text"]:focus {
+      outline: none;
+      border-color: #004080;
+      box-shadow: 0 0 8px rgba(0,64,128,0.3);
     }
 
     .search-bar select {
-      padding: 10px 12px;
-      border-radius: 8px;
+      padding: 12px 15px;
+      border-radius: 12px;
       border: 1px solid #aaa;
       background: #fff;
       font-size: 1em;
       cursor: pointer;
       min-width: 150px;
+      transition: box-shadow 0.2s, border 0.2s;
+    }
+
+    .search-bar select:focus {
+      outline: none;
+      border-color: #004080;
+      box-shadow: 0 0 8px rgba(0,64,128,0.3);
+    }
+
+    .search-bar .search-icon {
+      font-size: 1.5em;
+      color: #004080;
+      cursor: pointer;
+      padding: 10px;
+      transition: transform 0.2s;
+    }
+
+    .search-bar .search-icon:hover {
+      transform: scale(1.2);
     }
 
     /* 🔹 קלפי כתבות מעוצבים יותר */
@@ -102,8 +122,8 @@
       margin: 0;
       font-size: 1.3em;
       color: #004080;
-      line-height: 1.2em;
-      white-space: normal; /* ✅ תצוגת כותרת מלאה */
+      line-height: 1.3em;
+      white-space: normal; /* מוצג בשלמותו */
       overflow: visible;
       text-overflow: clip;
     }
@@ -114,9 +134,9 @@
       color: #555;
       font-weight: normal;
       line-height: 1.2em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
     }
 
     .article-content p {
@@ -164,20 +184,16 @@
 
   <!-- 🔹 שורת חיפוש -->
   <div class="search-bar">
-    <div style="position: relative; flex: 1 1 200px;">
-      <input type="text" id="search-input" placeholder="חיפוש...">
-      <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 1.2em; color: #555;">🔍</span>
-    </div>
-
-    <select id="search-field" size="2">
+    <input type="text" id="search-input" placeholder="חיפוש...">
+    <select id="search-field">
       <option value="">חפש לפי...</option>
       <option value="content">בתוכן הכתבה</option>
       <option value="title">בכותרת</option>
     </select>
-
-    <select id="tag-select" size="2">
+    <select id="tag-select">
       <option value="">בחר תגית</option>
     </select>
+    <span class="search-icon" onclick="performSearch()">🔍</span>
   </div>
 
   <div id="news-container"></div>
@@ -305,11 +321,6 @@ function performSearch() {
 
     displayNews(filtered);
 }
-
-// חיפוש אוטומטי כאשר המשתמש בוחר מהתפריטים או מקליד
-document.getElementById('search-input').addEventListener('input', performSearch);
-document.getElementById('search-field').addEventListener('change', performSearch);
-document.getElementById('tag-select').addEventListener('change', performSearch);
 
 loadNews();
 </script>
