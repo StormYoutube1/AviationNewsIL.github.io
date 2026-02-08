@@ -132,34 +132,33 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
 /* =========================
    קרוסלת מדיה
 ========================= */
+/* קרוסלת מדיה יציבה עם scroll-snap */
 .carousel-container {
-  position: relative;
-  margin-top: 20px;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.carousel-track {
+  overflow-x: auto;
   display: flex;
-  transition: transform 0.4s ease;
   gap: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
 }
 
 .carousel-item {
   flex: 0 0 auto;
-  cursor: pointer;
+  scroll-snap-align: start;
   border-radius: 8px;
-  overflow: hidden;
   max-height: 200px;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .carousel-item img,
 .carousel-item video {
-  width: 100%;
-  height: 100%;
+  display: block;
+  max-height: 200px;
   object-fit: contain;
   border-radius: 8px;
 }
+
 
 .carousel-dots {
   text-align: center;
@@ -370,22 +369,27 @@ async function loadArticle() {
     const dotsContainer = document.getElementById('carousel-dots');
     let currentIndex = 0;
 
-    if(article.media && article.media.length){
-      article.media.forEach((m, i) => {
-        const item = document.createElement('div');
-        item.className = 'carousel-item';
-        let elem;
-        if(m.endsWith('.mp4')){
-          elem = document.createElement('video');
-          elem.src = m;
-          elem.controls = true;
-        } else {
-          elem = document.createElement('img');
-          elem.src = m;
-        }
-        item.appendChild(elem);
-        item.onclick = () => openLightbox(m);
-        track.appendChild(item);
+    // קרוסלה פשוטה: כל item פתוח ב-Lightbox
+if(article.media && article.media.length){
+  const track = document.getElementById('carousel-track');
+  article.media.forEach(m=>{
+    const item = document.createElement('div');
+    item.className = 'carousel-item';
+    let elem;
+    if(m.endsWith('.mp4')){
+      elem = document.createElement('video');
+      elem.src = m;
+      elem.controls = true;
+    } else {
+      elem = document.createElement('img');
+      elem.src = m;
+    }
+    item.appendChild(elem);
+    item.onclick = () => openLightbox(m);
+    track.appendChild(item);
+  });
+}
+
 
         // dots
         const dot = document.createElement('span');
