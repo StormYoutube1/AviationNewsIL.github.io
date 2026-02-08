@@ -44,7 +44,7 @@ body {
   color: #fff; padding: 20px; font-size: 1.8em; font-weight: bold;
 }
 
-/* קרוסלה מתוקנת - שיטת ה-Slides */
+/* קרוסלה - הצגת קובץ מלא */
 .media-carousel-wrapper {
   margin: 30px 0;
   position: relative;
@@ -53,21 +53,20 @@ body {
 .media-carousel {
   display: flex;
   overflow-x: auto;
-  scroll-snap-type: x mandatory; /* נעילה מגנטית */
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  gap: 10px;
+  gap: 0; /* ללא רווח כדי שהחישוב יהיה מדויק ב-100% */
   border-radius: 12px;
+  background: #000; /* רקע שחור למילוי הצידיים של התמונה */
 }
 .media-carousel::-webkit-scrollbar { display: none; }
 
 .media-item {
-  flex: 0 0 100%; /* כל תמונה תופסת 100% מהרוחב כדי למנוע נקודות מיותרות */
+  flex: 0 0 100%; 
   scroll-snap-align: center;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
+  height: 400px; /* הגדלתי מעט את הגובה לתצוגה מרשימה */
+  object-fit: contain; /* שינוי קריטי: מכניס את כל הקובץ למסגרת */
   cursor: pointer;
-  background: #000;
 }
 
 .dots-container {
@@ -136,7 +135,7 @@ body {
   <h3 id="subtitle" style="color:#666; text-align:center;"></h3>
   <p id="writer-timestamp" style="text-align:center; font-size:0.9em; color:#999;"></p>
   
-  <div id="content" style="line-height:1.8;"></div>
+  <div id="content" style="line-height:1.8; margin-top:20px;"></div>
 
   <div class="media-carousel-wrapper" id="carousel-wrapper">
     <div class="media-carousel" id="media-gallery"></div>
@@ -182,7 +181,6 @@ async function loadArticle() {
 
     if (article.media && article.media.length) {
       article.media.forEach((src, index) => {
-        // יצירת אלמנט מדיה
         let el;
         if (src.endsWith('.mp4')) {
           el = document.createElement('video');
@@ -198,21 +196,19 @@ async function loadArticle() {
         el.className = 'media-item';
         gallery.appendChild(el);
 
-        // יצירת נקודה
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
         dot.onclick = () => {
           gallery.scrollTo({
-            left: -(index * gallery.offsetWidth),
+            left: -(index * gallery.clientWidth),
             behavior: 'smooth'
           });
         };
         dotsContainer.appendChild(dot);
       });
 
-      // עדכון נקודות
       gallery.onscroll = () => {
-        const index = Math.round(Math.abs(gallery.scrollLeft) / gallery.offsetWidth);
+        const index = Math.round(Math.abs(gallery.scrollLeft) / gallery.clientWidth);
         const dots = document.querySelectorAll('.dot');
         dots.forEach((d, i) => d.classList.toggle('active', i === index));
       };
@@ -220,7 +216,6 @@ async function loadArticle() {
       document.getElementById('carousel-wrapper').style.display = 'none';
     }
 
-    // Related
     const relatedGrid = document.getElementById('related-articles');
     newsData.filter(a => a.id !== articleId).slice(0, 4).forEach(rel => {
       const card = document.createElement('a');
@@ -240,8 +235,16 @@ function openModal(src) {
   modal.style.display = 'flex';
 }
 
-document.getElementById('close-modal').onclick = () => document.getElementById('media-modal').style.display = 'none';
-window.onclick = (e) => { if(e.target.id === 'media-modal') document.getElementById('media-modal').style.display = 'none'; }
+document.getElementById('close-modal').onclick = () => {
+    document.getElementById('media-modal').style.display = 'none';
+    document.getElementById('modal-body').innerHTML = ''; // עצירת וידאו
+};
+window.onclick = (e) => { 
+    if(e.target.id === 'media-modal') {
+        document.getElementById('media-modal').style.display = 'none';
+        document.getElementById('modal-body').innerHTML = '';
+    } 
+}
 
 loadArticle();
 </script>
