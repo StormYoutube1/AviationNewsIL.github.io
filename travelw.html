@@ -1,153 +1,198 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>חיפוש אזהרות מסע לפי מדינה</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אזהרות מסע – חדשות תעופה</title>
 
-  <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #cce7ff; /* רקע אחיד */
-      margin: 0;
-      padding: 0;
-    }
+<style>
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #cce7ff;
+    margin: 0;
+    padding: 0;
+  }
 
-    header {
-      text-align: center;
-      padding: 35px 20px 20px;
-      font-size: 2.4em;
-      font-weight: 800;
-      color: #003366;
-    }
+  /* פס ניווט עליון אחיד */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #004080;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
 
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 20px;
-    }
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
 
-    /* חיפוש */
-    .search-box {
-      position: relative;
-      margin-top: 20px;
-    }
+  .navbar-left img.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
 
-    input {
-      width: 100%;
-      padding: 16px;
-      font-size: 1.15em;
-      border-radius: 14px;
-      border: 2px solid #004080;
-      outline: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+  .navbar-left span.site-name {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
 
-    input:focus {
-      border-color: #0066cc;
-    }
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
 
-    .suggestions {
-      position: absolute;
-      width: 100%;
-      background: white;
-      border-radius: 0 0 14px 14px;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-      max-height: none;
-      overflow: hidden;
-      z-index: 100;
-    }
+  .navbar-right a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
 
-    .suggestion {
-      padding: 12px;
-      cursor: pointer;
-      font-weight: 500;
-    }
+  .navbar-right a:hover {
+    background: #0066cc;
+  }
 
-    .suggestion:hover {
-      background: #e6f2ff;
-    }
+  /* שאר הדף */
+  .container {
+    max-width: 720px;
+    margin: 20px auto;
+    padding: 20px;
+  }
 
-    /* מטוס */
-    .plane {
-      display: none;
-      position: fixed;
-      top: 40%;
-      right: -80px;
-      font-size: 42px;
-      animation: fly 1s linear forwards;
-      z-index: 5000;
-    }
+  input {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.15em;
+    border-radius: 14px;
+    border: 2px solid #004080;
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
 
-    @keyframes fly {
-      from { right: -80px; }
-      to { right: 110%; }
-    }
+  input:focus {
+    border-color: #0066cc;
+  }
 
-    /* תוצאה */
-    .result {
-      margin-top: 30px;
-      padding: 24px;
-      border-radius: 16px;
-      font-size: 1.15em;
-      line-height: 1.8;
-      font-weight: 600;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-      display: none;
-      white-space: pre-line;
-      animation: fadeIn 0.6s ease-in-out;
-    }
+  .suggestions {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    max-height: none;   
+    overflow: hidden;  
+    z-index: 100;
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  .suggestion {
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 500;
+  }
 
-    .note {
-      margin-top: 10px;
-      font-size: 0.9em;
-      color: #333;
-      text-align: center;
-      display: none;
-    }
+  .suggestion:hover {
+    background: #e6f2ff;
+  }
 
-    /* צבעי אזהרות */
-    .green { background: #b9f6ca; }       /* רמה 1? לא נעשה שימוש */
-    .green-yellow { background: #e6f9b5; } /* רמה 1 */
-    .yellow { background: #fff3b0; }       /* רמה 2 */
-    .orange-red { background: #ffcc99; }   /* רמה 3 */
-    .red { background: #ff9999; }          /* לא בשימוש */
-    .dark-red { background: #cc4444; color: white; } /* רמה 4 */
-    .black { background: #000; color: white; }       /* רמה 4 עם איסור */
+  .plane {
+    display: none;
+    position: fixed;
+    top: 40%;
+    right: -80px;
+    font-size: 42px;
+    animation: fly 1.0s linear forwards;
+    z-index: 5000;
+  }
 
-    /* אייקונים צפים – לא נוגעים */
-    .social-floating {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 9999;
-    }
+  @keyframes fly {
+    from { right: -80px; }
+    to { right: 110%; }
+  }
 
-    .social-floating img {
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
+  .result {
+    margin-top: 30px;
+    padding: 24px;
+    border-radius: 16px;
+    font-size: 1.15em;
+    line-height: 1.8;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    display: none;
+    white-space: pre-line;
+    animation: fadeIn 0.6s ease-in-out;
+  }
 
-    .social-floating img:hover {
-      transform: scale(1.1);
-    }
-  </style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .note {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #333;
+    text-align: center;
+    display: none;
+  }
+
+  .green { background: #b9f6ca; }
+  .green-yellow { background: #e6f9b5; }
+  .yellow { background: #fff3b0; }
+  .orange-red { background: #ffcc99; }
+  .red { background: #ff9999; }
+  .dark-red { background: #cc4444; color: white; }
+  .black { background: #000; color: white; }
+
+  /* אייקונים צפים */
+  .social-floating {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 9999;
+  }
+
+  .social-floating img {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .social-floating img:hover {
+    transform: scale(1.1);
+  }
+</style>
 </head>
 
 <body>
 
-<header>חיפוש אזהרות מסע לפי מדינה</header>
+<!-- פס ניווט עליון -->
+<div class="navbar">
+  <div class="navbar-left">
+    <img src="plane.jpg" alt="לוגו" class="logo">
+    <span class="site-name">חדשות תעופה ✈</span>
+  </div>
+  <div class="navbar-right">
+    <a href="index.html">דף הבית</a>
+    <a href="travelw.html">אזהרות מסע</a>
+  </div>
+</div>
 
+<!-- תוכן הדף -->
 <div class="container">
   <div class="search-box">
     <input id="search" placeholder="הקלד שם מדינה בעברית">
@@ -162,7 +207,7 @@
 
 <div class="plane" id="plane">✈️</div>
 
-<!-- אייקונים -->
+<!-- אייקונים צפים -->
 <div class="social-floating">
   <a href="https://t.me/AviationNewsIL" target="_blank">
     <img src="telegram_1.png" alt="Telegram">
@@ -217,18 +262,18 @@ function selectCountry(item) {
 
   plane.style.display = "block";
   plane.style.animation = "none";
-  plane.offsetHeight; // force reflow
+  plane.offsetHeight;
   plane.style.animation = "fly 1.0s linear forwards";
 
   setTimeout(() => {
     plane.style.display = "none";
 
     const text = item.recommendations || "";
-    let cls = "green-yellow"; // ברירת מחדל רמה 1
+    let cls = "green";
 
     if (text.includes("רמה 4") && text.includes("חל איסור")) cls = "black";
     else if (text.includes("רמה 4")) cls = "dark-red";
-    else if (text.includes("רמה 3")) cls = "orange-red"; // רמה 3
+    else if (text.includes("רמה 3")) cls = "orange-red";
     else if (text.includes("רמה 2")) cls = "yellow";
     else if (text.includes("רמה 1")) cls = "green-yellow";
 
