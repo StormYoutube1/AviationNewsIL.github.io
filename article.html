@@ -341,13 +341,6 @@ document.getElementById('lightbox-overlay').addEventListener('click', e => {
   e.currentTarget.style.display = 'none';
 });
 
-// =========================
-// Carousel Setup
-// =========================
-// =========================
-// Carousel Setup
-// =========================
-  
 <script>
 // =========================
 // Carousel Setup (RTL תקין)
@@ -379,7 +372,6 @@ function setupCarousel() {
     return Math.ceil(carousel.scrollWidth / itemWidth());
   }
 
-  // RTL: עמוד 1 = הכי ימני
   function currentPage() {
     const page = Math.round((maxScroll() - carousel.scrollLeft) / itemWidth()) + 1;
     return Math.min(Math.max(page, 1), totalPages());
@@ -394,21 +386,17 @@ function setupCarousel() {
   function updateArrows() {
     if (!leftArrow || !rightArrow) return;
 
-    // < אחורה = שמאלה ויזואלית = scrollLeft גדל
     leftArrow.style.display =
       carousel.scrollLeft < maxScroll() - 2 ? 'flex' : 'none';
 
-    // > קדימה = ימינה ויזואלית = scrollLeft קטן
     rightArrow.style.display =
       carousel.scrollLeft > 2 ? 'flex' : 'none';
   }
 
-  // < אחורה
   leftArrow.onclick = () => {
     carousel.scrollBy({ left: itemWidth(), behavior: 'smooth' });
   };
 
-  // > קדימה
   rightArrow.onclick = () => {
     carousel.scrollBy({ left: -itemWidth(), behavior: 'smooth' });
   };
@@ -433,4 +421,6 @@ loadArticle();
 
 </body>
 </html>
+
+
 
