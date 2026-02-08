@@ -6,6 +6,9 @@
 <title>כתבה ✈️</title>
 
 <style>
+/* =========================
+   בסיס ו-body
+========================= */
 body {
   font-family: Arial, sans-serif;
   background: #e0f0ff;
@@ -16,7 +19,9 @@ body {
   color: #333;
 }
 
-/* NAVBAR קבוע */
+/* =========================
+   NAVBAR קבוע
+========================= */
 .navbar {
   position: fixed;
   top: 0;
@@ -33,12 +38,27 @@ body {
   z-index: 1000;
 }
 
-.navbar-left { display: flex; align-items: center; gap: 12px; }
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .navbar-left a { display: inline-block; }
+
 .navbar-left .logo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+
 .navbar-left .site-name { font-size: 1.2em; }
+
 .navbar-right { display: flex; align-items: center; gap: 15px; }
-.navbar-right a { color: #fff; text-decoration: none; margin-left: 15px; transition: color 0.2s; }
+
+.navbar-right a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 15px;
+  transition: color 0.2s;
+}
+
 .navbar-right a:hover { color: #b0d4ff; }
 
 @media (max-width: 600px) {
@@ -47,7 +67,9 @@ body {
   .navbar-right { margin-top: 6px; }
 }
 
-/* Container כתבה */
+/* =========================
+   Container כתבה
+========================= */
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -55,7 +77,9 @@ body {
   padding-top: 120px;
 }
 
-/* Hero Image */
+/* =========================
+   Hero Image
+========================= */
 .hero {
   position: relative;
   width: 100%;
@@ -64,8 +88,18 @@ body {
   border-radius: 12px;
   margin-bottom: 25px;
 }
-.hero img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-.hero:hover img { transform: scale(1.03); }
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.hero:hover img {
+  transform: scale(1.03);
+}
+
 .hero-text {
   position: absolute;
   bottom: 20px;
@@ -79,13 +113,40 @@ body {
   font-weight: 700;
 }
 
-/* כותרת ותוכן */
-h1 { font-size: 2em; margin: 0 0 10px 0; color: #004080; text-align: center; }
-h3 { font-size: 1.2em; margin: 0 0 15px 0; color: #555; font-weight: normal; text-align: center; }
-p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
-#writer-timestamp { font-size: 0.9em; color: #777; margin-bottom: 20px; text-align: center; }
+/* =========================
+   כותרת ותוכן
+========================= */
+h1 {
+  font-size: 2em;
+  margin: 0 0 10px 0;
+  color: #004080;
+  text-align: center;
+}
 
-/* קרוסלת מדיה */
+h3 {
+  font-size: 1.2em;
+  margin: 0 0 15px 0;
+  color: #555;
+  font-weight: normal;
+  text-align: center;
+}
+
+p {
+  line-height: 1.7;
+  font-size: 1em;
+  margin-bottom: 15px;
+}
+
+#writer-timestamp {
+  font-size: 0.9em;
+  color: #777;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* =========================
+   קרוסלת מדיה
+========================= */
 .media-carousel-wrapper {
   position: relative;
   margin-top: 20px;
@@ -107,9 +168,13 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.2s;
+  cursor: pointer;
 }
+
 .media-carousel img:hover,
-.media-carousel video:hover { transform: scale(1.05); }
+.media-carousel video:hover {
+  transform: scale(1.05);
+}
 
 /* חצים לקרוסלה */
 .carousel-arrow {
@@ -128,34 +193,106 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   z-index: 10;
   font-size: 1.5em;
   transition: background 0.2s;
+  display: none; /* תחילה מוסתר */
 }
+
 .carousel-arrow:hover { background: rgba(0,0,0,0.6); }
+
 .carousel-arrow.left { right: 10px; }
 .carousel-arrow.right { left: 10px; }
 
-/* אינדיקטור עמודים */
+/* אינדיקטור קרוסלה */
 .carousel-indicator {
   text-align: center;
   margin-top: 8px;
-  font-size: 0.9em;
-  color: #555;
+  font-size: 0.95em;
+  color: #004080;
 }
 
-/* Related Articles */
-.related-articles { margin-top: 40px; }
-.related-articles h2 { font-size: 1.5em; color: #004080; margin-bottom: 15px; }
-.related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-.related-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.12); transition: transform 0.2s, box-shadow 0.2s; }
-.related-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
-.related-card img { width: 100%; height: 150px; object-fit: cover; }
+/* =========================
+   Lightbox
+========================= */
+#lightbox-overlay {
+  position: fixed;
+  top:0; left:0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  cursor: pointer;
+}
+
+#lightbox-overlay img,
+#lightbox-overlay video {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
+/* =========================
+   Related Articles
+========================= */
+.related-articles {
+  margin-top: 40px;
+}
+
+.related-articles h2 {
+  font-size: 1.5em;
+  color: #004080;
+  margin-bottom: 15px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.related-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.related-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
 .related-card .related-content { padding: 10px 12px; }
+
 .related-card h3 { margin: 0; font-size: 1em; color: #004080; }
 
-/* Back link */
-.back-link { display: block; margin-bottom: 20px; text-align: center; font-weight: bold; text-decoration: none; color: #004080; }
+/* =========================
+   Back link
+========================= */
+.back-link {
+  display: block;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  color: #004080;
+}
+
 .back-link:hover { text-decoration: underline; }
 
-/* אייקונים צפים */
+/* =========================
+   אייקונים צפים
+========================= */
 .social-float {
   position: fixed;
   left: 20px;
@@ -165,9 +302,19 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   gap: 12px;
   z-index: 9999;
 }
-.social-float img { width: 48px; height: 48px; cursor: pointer; transition: transform 0.2s; }
+
+.social-float img {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
 .social-float img:hover { transform: scale(1.1); }
 
+/* =========================
+   רספונסיבי
+========================= */
 @media (max-width: 600px) {
   .media-carousel img,
   .media-carousel video { width: 200px; height: 120px; }
@@ -180,6 +327,7 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
 
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
   <div class="navbar-left">
     <a href="index.html"><img src="plane.jpg" alt="לוגו" class="logo"></a>
@@ -194,6 +342,7 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
 <div class="container" id="news-container">
   <a href="index.html" class="back-link">⬅ חזרה לדף הראשי</a>
 
+  <!-- Hero Image -->
   <div class="hero">
     <img id="main-image" src="" alt="תמונה ראשית">
     <div class="hero-text" id="title"></div>
@@ -219,9 +368,17 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   </div>
 </div>
 
+<!-- Lightbox -->
+<div id="lightbox-overlay"></div>
+
+<!-- אייקונים צפים -->
 <div class="social-float">
-  <a href="https://t.me/AviationNewsIL" target="_blank" aria-label="Telegram"><img src="telegram_1.png" alt="Telegram"></a>
-  <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank" aria-label="WhatsApp"><img src="whatsapp_1.png" alt="WhatsApp"></a>
+  <a href="https://t.me/AviationNewsIL" target="_blank" aria-label="Telegram">
+    <img src="telegram_1.png" alt="Telegram">
+  </a>
+  <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank" aria-label="WhatsApp">
+    <img src="whatsapp_1.png" alt="WhatsApp">
+  </a>
 </div>
 
 <script>
@@ -234,6 +391,7 @@ async function loadArticle() {
       'https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json?cache=' + new Date().getTime()
     );
     const newsData = await response.json();
+
     const article = newsData.find(a => a.id === articleId);
     if (!article) {
       document.getElementById('news-container').innerHTML = "<p>לא נמצאה כתבה.</p>";
@@ -247,7 +405,6 @@ async function loadArticle() {
     document.title = article.title + " - חדשות תעופה ✈️";
     document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
 
-    // Media Carousel
     const gallery = document.getElementById('media-gallery');
     if (article.media && article.media.length) {
       article.media.forEach(m => {
@@ -261,8 +418,21 @@ async function loadArticle() {
           el.src = m;
         }
         gallery.appendChild(el);
+
+        // פתיחת Lightbox
+        el.addEventListener('click', () => {
+          const overlay = document.getElementById('lightbox-overlay');
+          overlay.innerHTML = '';
+          const clone = el.cloneNode();
+          clone.style.width = 'auto';
+          clone.style.height = '80%';
+          overlay.appendChild(clone);
+          overlay.style.display = 'flex';
+        });
       });
     }
+
+    updateCarouselControls();
 
     // Related Articles
     const relatedContainer = document.getElementById('related-articles');
@@ -282,9 +452,6 @@ async function loadArticle() {
       relatedContainer.appendChild(card);
     });
 
-    // Initialize carousel visibility and indicator
-    initCarousel();
-
   } catch(err) {
     console.error('Error loading article:', err);
     document.getElementById('news-container').innerHTML = "<p>אירעה שגיאה בטעינת הכתבה.</p>";
@@ -294,41 +461,52 @@ async function loadArticle() {
 loadArticle();
 
 // =========================
-// Carousel Controls + Indicator
+// Lightbox סגירה
 // =========================
-function initCarousel() {
-  const leftArrow = document.getElementById('carousel-left');
-  const rightArrow = document.getElementById('carousel-right');
-  const carousel = document.getElementById('media-gallery');
-  const indicator = document.getElementById('carousel-indicator');
-  const itemWidth = carousel.querySelector('img, video') ? carousel.querySelector('img, video').offsetWidth + 12 : 0;
+document.getElementById('lightbox-overlay').addEventListener('click', e => {
+  e.currentTarget.style.display = 'none';
+});
 
-  if (!itemWidth || carousel.children.length <= 1) {
+// =========================
+// Carousel Controls & Indicator
+// =========================
+const leftArrow = document.getElementById('carousel-left');
+const rightArrow = document.getElementById('carousel-right');
+const carousel = document.getElementById('media-gallery');
+const indicator = document.getElementById('carousel-indicator');
+
+function updateCarouselControls() {
+  const scrollWidth = carousel.scrollWidth - carousel.clientWidth;
+  if (scrollWidth > 0) {
+    leftArrow.style.display = 'flex';
+    rightArrow.style.display = 'flex';
+    updateIndicator();
+  } else {
     leftArrow.style.display = 'none';
     rightArrow.style.display = 'none';
+    indicator.textContent = '';
   }
-
-  function updateIndicator() {
-    const scrollLeft = carousel.scrollLeft;
-    const currentPage = Math.round(scrollLeft / itemWidth) + 1;
-    const totalPages = carousel.children.length;
-    indicator.textContent = totalPages ? `${currentPage} מתוך ${totalPages}` : '';
-    // Hide arrows if fully scrolled
-    leftArrow.style.display = scrollLeft <= 0 ? 'none' : 'flex';
-    rightArrow.style.display = scrollLeft >= carousel.scrollWidth - carousel.clientWidth ? 'none' : 'flex';
-  }
-
-  leftArrow.addEventListener('click', () => {
-    carousel.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-  });
-  rightArrow.addEventListener('click', () => {
-    carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
-  });
-  carousel.addEventListener('scroll', updateIndicator);
-
-  // Initial indicator update
-  updateIndicator();
 }
+
+function updateIndicator() {
+  const total = carousel.children.length;
+  const scrollLeft = carousel.scrollLeft;
+  const width = carousel.clientWidth;
+  let currentIndex = Math.round(scrollLeft / (carousel.children[0].offsetWidth + 12)) + 1;
+  if (currentIndex > total) currentIndex = total;
+  indicator.textContent = `${currentIndex} מתוך ${total}`;
+}
+
+leftArrow.addEventListener('click', () => {
+  carousel.scrollBy({ left: -320, behavior: 'smooth' });
+});
+
+rightArrow.addEventListener('click', () => {
+  carousel.scrollBy({ left: 320, behavior: 'smooth' });
+});
+
+carousel.addEventListener('scroll', updateIndicator);
+window.addEventListener('resize', updateCarouselControls);
 </script>
 
 </body>
