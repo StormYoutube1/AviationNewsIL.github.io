@@ -370,17 +370,17 @@ function setupCarousel() {
   function updateIndicator() {
     const total = carousel.children.length;
     const itemWidth = carousel.children[0] ? carousel.children[0].offsetWidth + 12 : 1;
-    const scrollLeft = carousel.scrollLeft;
     const visible = Math.floor(carousel.clientWidth / itemWidth);
-    const currentPage = Math.round(scrollLeft / itemWidth) + 1;
-    const totalPages = total - visible + 1;
-    if(totalPages <= 0) {
+
+    const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+    const remainingPages = Math.ceil((maxScrollLeft - carousel.scrollLeft) / itemWidth);
+    if (remainingPages <= 0) {
       indicator.textContent = '';
     } else {
-      const remaining = totalPages - currentPage;
-      indicator.textContent = remaining > 0 ? `עוד ${remaining} עמודים` : '';
+      indicator.textContent = `עוד ${remainingPages} עמודים`;
     }
   }
+  
 
   leftArrow.addEventListener('click', () => {
     const itemWidth = carousel.children[0] ? carousel.children[0].offsetWidth + 12 : 320;
