@@ -344,17 +344,31 @@ document.getElementById('lightbox-overlay').addEventListener('click', e => {
 // =========================
 // Carousel Setup
 // =========================
+// =========================
+// Carousel Setup
+// =========================
+  
 <script>
+// =========================
+// Carousel Setup (RTL תקין)
+// =========================
 function setupCarousel() {
-  const carousel = document.getElementById('media-gallery');
-  const leftArrow = document.getElementById('carousel-left');   // <
-  const rightArrow = document.getElementById('carousel-right'); // >
-  const indicator = document.getElementById('carousel-indicator');
+  const carousel   = document.getElementById('media-gallery');
+  const leftArrow  = document.getElementById('carousel-left');   // <
+  const rightArrow = document.getElementById('carousel-right');  // >
+  const indicator  = document.getElementById('carousel-indicator');
 
-  if (!carousel.children.length) return;
+  if (!carousel || carousel.children.length <= 1) {
+    if (leftArrow) leftArrow.style.display = 'none';
+    if (rightArrow) rightArrow.style.display = 'none';
+    if (indicator) indicator.textContent = '';
+    return;
+  }
+
+  const GAP = 12;
 
   function itemWidth() {
-    return carousel.children[0].offsetWidth + 12;
+    return carousel.children[0].offsetWidth + GAP;
   }
 
   function maxScroll() {
@@ -365,38 +379,36 @@ function setupCarousel() {
     return Math.ceil(carousel.scrollWidth / itemWidth());
   }
 
+  // RTL: עמוד 1 = הכי ימני
   function currentPage() {
-    return Math.round((maxScroll() - carousel.scrollLeft) / itemWidth()) + 1;
+    const page = Math.round((maxScroll() - carousel.scrollLeft) / itemWidth()) + 1;
+    return Math.min(Math.max(page, 1), totalPages());
   }
 
   function updateIndicator() {
-    if (totalPages() <= 1) {
-      indicator.textContent = '';
-      return;
-    }
-    indicator.textContent = `${currentPage()} מתוך ${totalPages()}`;
+    if (!indicator) return;
+    indicator.textContent =
+      totalPages() > 1 ? `${currentPage()} מתוך ${totalPages()}` : '';
   }
 
   function updateArrows() {
-    if (totalPages() <= 1) {
-      leftArrow.style.display = 'none';
-      rightArrow.style.display = 'none';
-      return;
-    }
+    if (!leftArrow || !rightArrow) return;
 
+    // < אחורה = שמאלה ויזואלית = scrollLeft גדל
     leftArrow.style.display =
-      carousel.scrollLeft < maxScroll() - 5 ? 'flex' : 'none';
+      carousel.scrollLeft < maxScroll() - 2 ? 'flex' : 'none';
 
+    // > קדימה = ימינה ויזואלית = scrollLeft קטן
     rightArrow.style.display =
-      carousel.scrollLeft > 5 ? 'flex' : 'none';
+      carousel.scrollLeft > 2 ? 'flex' : 'none';
   }
 
-  // < = אחורה
+  // < אחורה
   leftArrow.onclick = () => {
     carousel.scrollBy({ left: itemWidth(), behavior: 'smooth' });
   };
 
-  // > = קדימה
+  // > קדימה
   rightArrow.onclick = () => {
     carousel.scrollBy({ left: -itemWidth(), behavior: 'smooth' });
   };
@@ -414,11 +426,11 @@ function setupCarousel() {
   updateIndicator();
   updateArrows();
 }
-</script>
 
-
+// הפעלה אחרי טעינת הכתבה
 loadArticle();
 </script>
 
 </body>
 </html>
+
