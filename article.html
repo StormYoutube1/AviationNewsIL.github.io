@@ -24,9 +24,7 @@ body {
 ========================= */
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,7 +32,6 @@ body {
   background-color: #004080;
   color: #fff;
   font-weight: 600;
-  font-size: 1em;
   z-index: 1000;
 }
 
@@ -65,9 +62,7 @@ body {
 
 .hero-text {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  bottom: 20px; left: 20px; right: 20px;
   color: #fff;
   background: rgba(0,0,0,0.4);
   padding: 15px;
@@ -80,7 +75,8 @@ body {
    קרוסלה דינמית
 ========================= */
 .media-carousel-wrapper {
-  margin: 30px 0;
+  margin-top: 30px;
+  text-align: center;
 }
 
 .media-carousel {
@@ -88,7 +84,7 @@ body {
   gap: 15px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -111,12 +107,12 @@ body {
   justify-content: center;
   gap: 8px;
   margin-top: 15px;
-  min-height: 20px;
+  flex-wrap: wrap; /* תמיכה בהרבה נקודות */
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #bbb;
   cursor: pointer;
@@ -129,14 +125,14 @@ body {
 }
 
 /* =========================
-   Modal (הגדלה)
+   Modal
 ========================= */
 .modal {
   display: none;
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.92);
+  background: rgba(0,0,0,0.9);
   z-index: 2000;
   justify-content: center;
   align-items: center;
@@ -144,25 +140,22 @@ body {
 
 .modal-content {
   max-width: 90%;
-  max-height: 80vh;
+  max-height: 85vh;
   border-radius: 8px;
-  object-fit: contain;
 }
 
 .close-modal {
   position: absolute;
-  top: 20px;
-  right: 30px;
+  top: 20px; right: 30px;
   color: #fff;
-  font-size: 50px;
+  font-size: 45px;
   cursor: pointer;
-  user-select: none;
 }
 
 /* =========================
-   Related Articles
+   תוכן ועיצוב נוסף
 ========================= */
-#content { line-height: 1.8; font-size: 1.1em; }
+#content { line-height: 1.8; font-size: 1.1em; margin-bottom: 30px; }
 .back-link { display: block; text-align: center; margin-bottom: 15px; color: #004080; text-decoration: none; font-weight: bold; }
 
 .related-grid {
@@ -183,7 +176,7 @@ body {
 .related-card img { width: 100%; height: 120px; object-fit: cover; }
 .related-card h3 { padding: 8px; font-size: 0.9em; margin: 0; }
 
-.social-float { position: fixed; left: 15px; bottom: 15px; display: flex; flex-direction: column; gap: 10px; z-index: 999; }
+.social-float { position: fixed; left: 15px; bottom: 15px; display: flex; flex-direction: column; gap: 10px; }
 .social-float img { width: 45px; height: 45px; }
 
 </style>
@@ -214,7 +207,7 @@ body {
 
   <div id="content"></div>
 
-  <div class="media-carousel-wrapper">
+  <div class="media-carousel-wrapper" id="carousel-section">
     <div class="media-carousel" id="media-gallery"></div>
     <div class="dots-container" id="dots-container"></div>
   </div>
@@ -227,7 +220,7 @@ body {
 
 <div class="modal" id="media-modal">
   <span class="close-modal" id="close-modal">&times;</span>
-  <div id="modal-body" style="width:100%; display:flex; justify-content:center;"></div>
+  <div id="modal-body" style="display: flex; justify-content: center; align-items: center; width: 100%;"></div>
 </div>
 
 <div class="social-float">
@@ -238,10 +231,6 @@ body {
 <script>
 const params = new URLSearchParams(window.location.search);
 const articleId = params.get('id');
-const modal = document.getElementById('media-modal');
-const modalBody = document.getElementById('modal-body');
-const gallery = document.getElementById('media-gallery');
-const dotsContainer = document.getElementById('dots-container');
 
 async function loadArticle() {
   try {
@@ -254,27 +243,29 @@ async function loadArticle() {
       return;
     }
 
-    // מידע בסיסי
+    // תוכן כללי
     document.getElementById('title').textContent = article.title;
     document.getElementById('subtitle').textContent = article.subtitle;
     document.getElementById('writer-timestamp').textContent = article.writer + " | " + article.timestamp;
     document.getElementById('main-image').src = article.main_image;
     document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
 
-    // ניקוי גלריה ונקודות לפני טעינה (למקרה של טעינה מחדש)
+    // גלריה ונקודות (דינמי)
+    const gallery = document.getElementById('media-gallery');
+    const dotsContainer = document.getElementById('dots-container');
+    
+    // ניקוי המכולות ליתר ביטחון
     gallery.innerHTML = '';
     dotsContainer.innerHTML = '';
 
-    // יצירה דינמית של מדיה ונקודות
     if (article.media && article.media.length > 0) {
       article.media.forEach((src, index) => {
-        // 1. יצירת אלמנט המדיה
+        // 1. יצירת המדיה (תמונה או וידאו)
         let el;
         if (src.endsWith('.mp4')) {
           el = document.createElement('video');
           el.src = src;
           el.muted = true;
-          el.playsInline = true;
         } else {
           el = document.createElement('img');
           el.src = src;
@@ -282,37 +273,44 @@ async function loadArticle() {
         el.onclick = () => openModal(src);
         gallery.appendChild(el);
 
-        // 2. יצירת נקודה תואמת
+        // 2. יצירת נקודה תואמת בדיוק
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
-        dot.addEventListener('click', () => {
-          const itemWidth = el.offsetWidth + 15; // 300px + 15px gap
+        
+        // לחיצה על נקודה תגלול לפריט
+        dot.onclick = () => {
+          const itemWidth = el.offsetWidth + 15; // רוחב פריט + הרווח (GAP)
           gallery.scrollTo({
-            left: -(index * itemWidth),
+            left: -(index * itemWidth), // שלילי עבור RTL
             behavior: 'smooth'
           });
-        });
+        };
         dotsContainer.appendChild(dot);
       });
 
-      // עדכון נקודות בזמן גלילה
-      gallery.addEventListener('scroll', () => {
-        const itemWidth = gallery.querySelector('img, video').offsetWidth + 15;
+      // עדכון מצב הנקודות בזמן גלילה ידנית
+      gallery.onscroll = () => {
+        const itemWidth = gallery.children[0].offsetWidth + 15;
         const currentIndex = Math.round(Math.abs(gallery.scrollLeft) / itemWidth);
         
-        const allDots = document.querySelectorAll('.dot');
-        allDots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-      });
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === currentIndex);
+        });
+      };
+    } else {
+      // אם אין מדיה, נסתיר את המיכל
+      document.getElementById('carousel-section').style.display = 'none';
     }
 
     // כתבות קשורות
-    const relatedContainer = document.getElementById('related-articles');
+    const relatedGrid = document.getElementById('related-articles');
     newsData.filter(a => a.id !== articleId).slice(0, 4).forEach(rel => {
       const card = document.createElement('a');
       card.href = `article.html?id=${rel.id}`;
       card.className = 'related-card';
       card.innerHTML = `<img src="${rel.main_image}"><h3>${rel.title}</h3>`;
-      relatedContainer.appendChild(card);
+      relatedGrid.appendChild(card);
     });
 
   } catch(err) {
@@ -320,8 +318,12 @@ async function loadArticle() {
   }
 }
 
+// פונקציות המודל (הגדלה)
 function openModal(src) {
+  const modal = document.getElementById('media-modal');
+  const modalBody = document.getElementById('modal-body');
   modalBody.innerHTML = '';
+  
   let content;
   if (src.endsWith('.mp4')) {
     content = document.createElement('video');
@@ -337,14 +339,15 @@ function openModal(src) {
 }
 
 document.getElementById('close-modal').onclick = () => {
-  modal.style.display = 'none';
-  modalBody.innerHTML = '';
+  document.getElementById('media-modal').style.display = 'none';
+  document.getElementById('modal-body').innerHTML = '';
 };
 
 window.onclick = (e) => {
+  const modal = document.getElementById('media-modal');
   if (e.target == modal) {
     modal.style.display = 'none';
-    modalBody.innerHTML = '';
+    document.getElementById('modal-body').innerHTML = '';
   }
 };
 
