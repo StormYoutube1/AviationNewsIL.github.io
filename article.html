@@ -110,10 +110,58 @@
     .social-float img:hover {
       transform: scale(1.1);
     }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px;
+    background-color: #004080;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+  }
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .navbar-left .logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .navbar-left .site-name {
+    font-size: 1.2em;
+  }
+
+  .navbar-right a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 15px;
+    transition: color 0.2s;
+  }
+
+  .navbar-right a:hover {
+    color: #b0d4ff;
+  }
   </style>
 </head>
 
 <body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <img src="plane.jpg" alt="לוגו" class="logo">
+      <span class="site-name">חדשות תעופה</span>
+    </div>
+    <div class="navbar-right">
+      <a href="index.html">דף הבית</a>
+      <a href="travelw.html">אזהרות מסע</a>
+    </div>
+  </nav>
 
   <div class="container" id="news-container">
     <a href="index.html" class="back-link">⬅ חזרה לדף הראשי</a>
