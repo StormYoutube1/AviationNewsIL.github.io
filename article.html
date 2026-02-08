@@ -96,9 +96,7 @@ body {
   transition: transform 0.3s;
 }
 
-.hero:hover img {
-  transform: scale(1.03);
-}
+.hero:hover img { transform: scale(1.03); }
 
 .hero-text {
   position: absolute;
@@ -166,14 +164,12 @@ p {
   height: 170px;
   object-fit: cover;
   border-radius: 8px;
-  transition: transform 0.2s;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .media-carousel img:hover,
-.media-carousel video:hover {
-  transform: scale(1.05);
-}
+.media-carousel video:hover { transform: scale(1.05); }
 
 /* חצים לקרוסלה */
 .carousel-arrow {
@@ -191,8 +187,6 @@ p {
   cursor: pointer;
   z-index: 10;
   font-size: 1.5em;
-  transition: background 0.2s;
-  display: none;
 }
 
 .carousel-arrow:hover { background: rgba(0,0,0,0.6); }
@@ -418,7 +412,7 @@ async function loadArticle() {
         }
         gallery.appendChild(el);
 
-        // פתיחת Lightbox
+        // Lightbox
         el.addEventListener('click', () => {
           const overlay = document.getElementById('lightbox-overlay');
           overlay.innerHTML = '';
@@ -450,19 +444,22 @@ async function loadArticle() {
     });
 
     setTimeout(updateCarousel, 100);
+
   } catch(err) {
     console.error('Error loading article:', err);
     document.getElementById('news-container').innerHTML = "<p>אירעה שגיאה בטעינת הכתבה.</p>";
   }
 }
 
+// =========================
 // Lightbox סגירה
+// =========================
 document.getElementById('lightbox-overlay').addEventListener('click', e => {
   e.currentTarget.style.display = 'none';
 });
 
 // =========================
-// Carousel Controls & Indicator
+// קרוסלת מדיה עם חיצים ואינדיקטור
 // =========================
 const leftArrow = document.getElementById('carousel-left');
 const rightArrow = document.getElementById('carousel-right');
@@ -472,13 +469,18 @@ function updateCarousel() {
   const totalWidth = carousel.scrollWidth;
   const scrollLeft = carousel.scrollLeft;
 
-  // החיצים
+  if (totalWidth <= wrapperWidth) {
+    leftArrow.style.display = 'none';
+    rightArrow.style.display = 'none';
+    indicator.textContent = '';
+    return;
+  }
+
   leftArrow.style.display = scrollLeft <= 0 ? 'none' : 'flex';
   rightArrow.style.display = scrollLeft + wrapperWidth >= totalWidth - 1 ? 'none' : 'flex';
 
-  // כמה עמודים עוד לגלול
-  const remaining = Math.ceil((totalWidth - wrapperWidth - scrollLeft) / wrapperWidth);
-  indicator.textContent = remaining > 0 ? `עוד ${remaining} עמוד${remaining>1?'ים':''} לגלול` : '';
+  const remainingPages = Math.ceil((totalWidth - wrapperWidth - scrollLeft) / wrapperWidth);
+  indicator.textContent = remainingPages > 0 ? `עוד ${remainingPages} עמוד${remainingPages>1?'ים':''} לגלול` : '';
 }
 
 function scrollCarousel(direction) {
@@ -486,7 +488,6 @@ function scrollCarousel(direction) {
   carousel.scrollBy({ left: direction * wrapperWidth, behavior: 'smooth' });
 }
 
-// אירועים
 leftArrow.addEventListener('click', () => scrollCarousel(-1));
 rightArrow.addEventListener('click', () => scrollCarousel(1));
 carousel.addEventListener('scroll', updateCarousel);
