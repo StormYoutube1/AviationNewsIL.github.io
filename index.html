@@ -29,14 +29,14 @@
       padding: 20px;
     }
 
-    /* 🔍 שורת חיפוש משודרגת */
+    /* 🔍 שורת חיפוש */
     .search-wrapper {
       display: flex;
       align-items: center;
       gap: 10px;
       background: #fff;
       border-radius: 999px;
-      padding: 12px 18px;
+      padding: 14px 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       margin-bottom: 35px;
     }
@@ -52,7 +52,7 @@
       border: none;
       background: #eef4ff;
       border-radius: 999px;
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 0.9em;
       cursor: pointer;
     }
@@ -64,7 +64,7 @@
       padding: 6px 10px;
     }
 
-    /* 📰 כרטיסי כתבות – קומפקטיים ויפים */
+    /* 📰 כרטיסי כתבות */
     .article-card {
       display: flex;
       gap: 15px;
@@ -101,7 +101,6 @@
       font-size: 1.25em;
       color: #004080;
       line-height: 1.3em;
-      white-space: normal;
     }
 
     .article-content h3 {
@@ -177,10 +176,10 @@
 <!-- 🔹 אייקונים צפים -->
 <div class="social-floating">
   <a href="https://t.me/AviationNewsIL" target="_blank">
-    <img src="telegram_1.png">
+    <img src="telegram_1.png" alt="Telegram">
   </a>
   <a href="https://whatsapp.com/channel/0029VaxalrjADTO95pRvmp3D" target="_blank">
-    <img src="whatsapp_1.png">
+    <img src="whatsapp_1.png" alt="WhatsApp">
   </a>
 </div>
 
@@ -188,8 +187,10 @@
 let allNews = [];
 
 async function loadNews() {
-  const res = await fetch('https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json?c=' + Date.now());
-  allNews = (await res.json()).sort((a,b)=>a.position-b.position);
+  const res = await fetch(
+    'https://stormyoutube1.github.io/AviationNewsIL.github.io/news.json?c=' + Date.now()
+  );
+  allNews = (await res.json()).sort((a, b) => a.position - b.position);
   populateTags();
   displayNews(allNews);
 }
@@ -200,7 +201,8 @@ function populateTags() {
   allNews.forEach(a => a.tags?.forEach(t => set.add(t)));
   set.forEach(t => {
     const o = document.createElement('option');
-    o.value = t; o.textContent = t;
+    o.value = t;
+    o.textContent = t;
     select.appendChild(o);
   });
 }
@@ -208,15 +210,18 @@ function populateTags() {
 function displayNews(list) {
   const c = document.getElementById('news-container');
   c.innerHTML = list.length ? '' : '<p>לא נמצאו כתבות.</p>';
+
   list.forEach(a => {
     const card = document.createElement('a');
     card.className = 'article-card';
     card.href = `article.html?id=${a.id}`;
-    if(a.main_image){
+
+    if (a.main_image) {
       const img = document.createElement('img');
       img.src = a.main_image;
       card.appendChild(img);
     }
+
     const d = document.createElement('div');
     d.className = 'article-content';
     d.innerHTML = `
@@ -224,27 +229,39 @@ function displayNews(list) {
       ${a.subtitle ? `<h3>${a.subtitle}</h3>` : ''}
       <p>${a.writer} | ${a.timestamp}</p>
     `;
+
     card.appendChild(d);
     c.appendChild(card);
   });
 }
 
 function performSearch() {
-  const q = search-input.value.trim();
-  const f = search-field.value;
-  const t = tag-select.value;
+  const q = document.getElementById('search-input').value.trim();
+  const f = document.getElementById('search-field').value;
+  const t = document.getElementById('tag-select').value;
 
-  if((f && !q)) return alert('חובה להזין טקסט לחיפוש לפי כותרת / תוכן');
+  if (f && !q) {
+    alert('חובה להזין טקסט לחיפוש לפי כותרת / תוכן');
+    return;
+  }
 
-  if(!f && !t) return displayNews(allNews);
+  if (!f && !t) {
+    displayNews(allNews);
+    return;
+  }
 
-  const res = allNews.filter(a=>{
+  const res = allNews.filter(a => {
     let ok = true;
-    if(f){
-      const txt = f==='title' ? a.title : a.content;
-      ok = txt.includes(q);
+
+    if (f) {
+      const txt = f === 'title' ? a.title : a.content;
+      ok = txt && txt.includes(q);
     }
-    if(t) ok = ok && a.tags?.includes(t);
+
+    if (t) {
+      ok = ok && Array.isArray(a.tags) && a.tags.includes(t);
+    }
+
     return ok;
   });
 
