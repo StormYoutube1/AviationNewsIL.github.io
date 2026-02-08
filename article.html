@@ -77,10 +77,10 @@ body {
 }
 
 /* =========================
-   קרוסלה (נקודות לחיצות)
+   קרוסלה דינמית
 ========================= */
 .media-carousel-wrapper {
-  margin-top: 30px;
+  margin: 30px 0;
 }
 
 .media-carousel {
@@ -88,7 +88,7 @@ body {
   gap: 15px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -97,7 +97,7 @@ body {
 
 .media-carousel img,
 .media-carousel video {
-  flex: 0 0 300px;
+  flex: 0 0 300px; /* רוחב קבוע לכל פריט */
   height: 200px;
   object-fit: cover;
   border-radius: 12px;
@@ -109,20 +109,19 @@ body {
 .dots-container {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 15px;
+  min-height: 20px;
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #bbb;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
-.dot:hover { background: #888; }
 
 .dot.active {
   background: #004080;
@@ -137,7 +136,7 @@ body {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.92);
   z-index: 2000;
   justify-content: center;
   align-items: center;
@@ -145,9 +144,9 @@ body {
 
 .modal-content {
   max-width: 90%;
-  max-height: 85vh;
+  max-height: 80vh;
   border-radius: 8px;
-  box-shadow: 0 0 20px rgba(255,255,255,0.1);
+  object-fit: contain;
 }
 
 .close-modal {
@@ -155,15 +154,15 @@ body {
   top: 20px;
   right: 30px;
   color: #fff;
-  font-size: 45px;
-  font-weight: bold;
+  font-size: 50px;
   cursor: pointer;
+  user-select: none;
 }
 
 /* =========================
    Related Articles
 ========================= */
-#content { line-height: 1.8; font-size: 1.1em; margin-bottom: 30px; }
+#content { line-height: 1.8; font-size: 1.1em; }
 .back-link { display: block; text-align: center; margin-bottom: 15px; color: #004080; text-decoration: none; font-weight: bold; }
 
 .related-grid {
@@ -228,7 +227,7 @@ body {
 
 <div class="modal" id="media-modal">
   <span class="close-modal" id="close-modal">&times;</span>
-  <div id="modal-body" style="display: flex; justify-content: center; align-items: center; width: 100%;"></div>
+  <div id="modal-body" style="width:100%; display:flex; justify-content:center;"></div>
 </div>
 
 <div class="social-float">
@@ -255,21 +254,27 @@ async function loadArticle() {
       return;
     }
 
+    // מידע בסיסי
     document.getElementById('title').textContent = article.title;
     document.getElementById('subtitle').textContent = article.subtitle;
     document.getElementById('writer-timestamp').textContent = article.writer + " | " + article.timestamp;
     document.getElementById('main-image').src = article.main_image;
     document.getElementById('content').innerHTML = article.content.replace(/\n/g, '<br>');
-    document.title = article.title;
 
-    if (article.media && article.media.length) {
+    // ניקוי גלריה ונקודות לפני טעינה (למקרה של טעינה מחדש)
+    gallery.innerHTML = '';
+    dotsContainer.innerHTML = '';
+
+    // יצירה דינמית של מדיה ונקודות
+    if (article.media && article.media.length > 0) {
       article.media.forEach((src, index) => {
-        // יצירת אלמנט מדיה
+        // 1. יצירת אלמנט המדיה
         let el;
         if (src.endsWith('.mp4')) {
           el = document.createElement('video');
           el.src = src;
           el.muted = true;
+          el.playsInline = true;
         } else {
           el = document.createElement('img');
           el.src = src;
@@ -277,12 +282,11 @@ async function loadArticle() {
         el.onclick = () => openModal(src);
         gallery.appendChild(el);
 
-        // יצירת נקודה לחיצה
+        // 2. יצירת נקודה תואמת
         const dot = document.createElement('div');
         dot.className = 'dot' + (index === 0 ? ' active' : '');
         dot.addEventListener('click', () => {
-          const itemWidth = el.offsetWidth + 15; // רוחב תמונה + GAP
-          // ב-RTL (עברית) הגלילה היא בערכים שליליים
+          const itemWidth = el.offsetWidth + 15; // 300px + 15px gap
           gallery.scrollTo({
             left: -(index * itemWidth),
             behavior: 'smooth'
@@ -291,16 +295,17 @@ async function loadArticle() {
         dotsContainer.appendChild(dot);
       });
 
-      // עדכון הנקודה הפעילה בזמן גלילה ידנית
+      // עדכון נקודות בזמן גלילה
       gallery.addEventListener('scroll', () => {
         const itemWidth = gallery.querySelector('img, video').offsetWidth + 15;
-        const scrollIndex = Math.round(Math.abs(gallery.scrollLeft) / itemWidth);
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((d, i) => d.classList.toggle('active', i === scrollIndex));
+        const currentIndex = Math.round(Math.abs(gallery.scrollLeft) / itemWidth);
+        
+        const allDots = document.querySelectorAll('.dot');
+        allDots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
       });
     }
 
-    // כתבות נוספות
+    // כתבות קשורות
     const relatedContainer = document.getElementById('related-articles');
     newsData.filter(a => a.id !== articleId).slice(0, 4).forEach(rel => {
       const card = document.createElement('a');
@@ -311,7 +316,7 @@ async function loadArticle() {
     });
 
   } catch(err) {
-    console.error(err);
+    console.error('Error:', err);
   }
 }
 
@@ -332,10 +337,16 @@ function openModal(src) {
 }
 
 document.getElementById('close-modal').onclick = () => {
-    modal.style.display = 'none';
-    modalBody.innerHTML = ''; // עצירת וידאו בסגירה
+  modal.style.display = 'none';
+  modalBody.innerHTML = '';
 };
-window.onclick = (e) => { if (e.target == modal) { modal.style.display = 'none'; modalBody.innerHTML = ''; } };
+
+window.onclick = (e) => {
+  if (e.target == modal) {
+    modal.style.display = 'none';
+    modalBody.innerHTML = '';
+  }
+};
 
 loadArticle();
 </script>
