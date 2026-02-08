@@ -16,10 +16,84 @@
       color: #333;
     }
 
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; /* קבוע למעלה */
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 25px;
+      background-color: #004080;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1em;
+      z-index: 1000;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar-left a {
+      display: inline-block;
+    }
+
+    .navbar-left .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .navbar-left .site-name {
+      font-size: 1.2em;
+    }
+
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .navbar-right a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 15px;
+      transition: color 0.2s;
+    }
+
+    .navbar-right a:hover {
+      color: #b0d4ff;
+    }
+
+    /* ריווח navbar בטלפון */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .navbar-left {
+        width: 100%;
+        justify-content: center;
+      }
+      .navbar-right {
+        width: 100%;
+        justify-content: center;
+        margin-top: 6px;
+      }
+    }
+
+    /* ===== תוכן ===== */
     .container {
       max-width: 900px;
-      margin: 20px auto;
+      margin: 0 auto;
       padding: 20px;
+      padding-top: 100px; /* רווח עליון בשביל navbar קבוע */
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -89,7 +163,7 @@
       font-weight: bold;
     }
 
-    /* ===== אייקונים צפים ===== */
+    /* אייקונים צפים */
     .social-float {
       position: fixed;
       left: 20px;
@@ -110,84 +184,31 @@
     .social-float img:hover {
       transform: scale(1.1);
     }
-  .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 25px;
-  background-color: #004080;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1em;
-}
 
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.navbar-left .logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.navbar-left .site-name {
-  font-size: 1.2em;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.navbar-right a {
-  color: #fff;
-  text-decoration: none;
-  margin-left: 15px;
-  transition: color 0.2s;
-}
-
-.navbar-right a:hover {
-  color: #b0d4ff;
-}
-/* 🔹 ריווח navbar בטלפון בלבד */
-@media (max-width: 600px) {
-  .navbar {
-    flex-wrap: wrap;          /* מאפשר ירידת שורה */
-    gap: 10px;                /* רווח בין השורות */
-  }
-
-  .navbar-right {
-    width: 100%;
-    justify-content: center;  /* קישורים באמצע */
-    margin-top: 6px;          /* רווח מהשם של האתר */
-  }
-
-  .navbar-left {
-    width: 100%;
-    justify-content: center;  /* שם האתר באמצע */
-  }
-}
-
-
+    /* רספונסיבי מדיה */
+    @media (max-width: 600px) {
+      .media-gallery img,
+      .media-gallery video {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <nav class="navbar">
+  <!-- NAVBAR -->
+  <div class="navbar">
     <div class="navbar-left">
-      <img src="plane.jpg" alt="לוגו" class="logo">
+      <a href="index.html">
+        <img src="plane.jpg" alt="לוגו" class="logo">
+      </a>
       <span class="site-name">חדשות תעופה ✈</span>
     </div>
     <div class="navbar-right">
       <a href="index.html">דף הבית</a>
       <a href="travelw.html">אזהרות מסע</a>
     </div>
-  </nav>
+  </div>
 
   <div class="container" id="news-container">
     <a href="index.html" class="back-link">⬅ חזרה לדף הראשי</a>
@@ -275,6 +296,5 @@
 
     loadArticle();
   </script>
-
 </body>
 </html>
