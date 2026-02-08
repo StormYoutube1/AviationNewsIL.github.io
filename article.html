@@ -154,6 +154,25 @@
 .navbar-right a:hover {
   color: #b0d4ff;
 }
+/* 🔹 ריווח navbar בטלפון בלבד */
+@media (max-width: 600px) {
+  .navbar {
+    flex-wrap: wrap;          /* מאפשר ירידת שורה */
+    gap: 10px;                /* רווח בין השורות */
+  }
+
+  .navbar-right {
+    width: 100%;
+    justify-content: center;  /* קישורים באמצע */
+    margin-top: 6px;          /* רווח מהשם של האתר */
+  }
+
+  .navbar-left {
+    width: 100%;
+    justify-content: center;  /* שם האתר באמצע */
+  }
+}
+
 
   </style>
 </head>
