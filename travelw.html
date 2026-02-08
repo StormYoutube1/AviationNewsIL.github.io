@@ -19,6 +19,12 @@ body {
    NAVBAR
 ========================= */
 .navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 10000;
+  
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,6 +39,8 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .navbar-left .logo {
@@ -225,10 +233,12 @@ input:focus {
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <div class="navbar-left">
+  <a href="index.html" class="navbar-left">
     <img src="plane.jpg" class="logo" alt="לוגו">
     <span class="site-name">חדשות תעופה ✈</span>
-  </div>
+  </a>
+    
+
   <div class="navbar-right">
     <a href="index.html">דף הבית</a>
     <a href="travelw.html">אזהרות מסע</a>
