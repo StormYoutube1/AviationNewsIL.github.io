@@ -159,10 +159,13 @@ p { line-height: 1.7; font-size: 1em; margin-bottom: 15px; }
   border-radius: 8px;
 }
 @media (max-width: 600px) {
+  .carousel-item {
+    flex: 0 0 90%;    /* כמעט כל רוחב המסך */
+  }
   .carousel-item img,
   .carousel-item video {
-    width: 100%;    /* תמונות יתאימו לרוחב המסך */
-    height: auto;   /* גובה דינמי */
+    width: 100%;      /* תמונות יתאימו לרוחב */
+    height: auto;     /* גובה דינמי */
   }
 }
 
