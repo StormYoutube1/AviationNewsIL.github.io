@@ -299,50 +299,79 @@ header {
 /* =========================
    תיקונים למובייל
 ========================= */
+/* =========================
+   התאמות למובייל (טלפונים)
+========================= */
 @media (max-width: 600px) {
+  /*Navbar adjustment*/
+  body { padding-top: 100px; }
+  
+  .navbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px;
+  }
 
-  /* הכתבה הראשית תתפרס על כל הרוחב, הכותרת לא תיחתך */
+  /* תיקון שורת החיפוש - הופכת לרשימה אנכית */
+  .search-inner {
+    flex-direction: column;
+    border-radius: 12px;
+    background: #fff; /* רקע בהיר יותר להפרדה */
+  }
+
+  .search-inner input, 
+  .search-inner select {
+    width: 100%;
+    border-bottom: 1px solid #ddd; /* קו מפריד בין השדות */
+    padding: 15px;
+    font-size: 0.95em;
+  }
+
+  .search-inner .search-icon {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #004080;
+    color: white;
+  }
+
+  /* תיקון כותרות ה-Hero (הכתבה הראשית) */
+  .news-hero img { height: 220px; }
+  
   .news-hero .hero-content {
     padding: 15px;
-    position: relative; /* לא מעל התמונה כדי שתישאר גלויה */
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
   }
 
   .news-hero .hero-content h2 {
-    font-size: 1.8em; /* קטן יותר מהמובייל */
-    word-break: break-word; /* שובר מילים ארוכות */
+    font-size: 1.3em; /* פונט קטן יותר שלא יחתך */
+    line-height: 1.3;
+    margin-bottom: 5px;
+    word-wrap: break-word; /* שבירת מילים ארוכות */
   }
 
   .news-hero .hero-content p {
     font-size: 0.85em;
-    word-break: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* מגביל ל-2 שורות תיאור כדי שלא יסתיר את התמונה */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  /* רשת המגזין - עמודה אחת לכל הכתבות */
+  /* תיקון הגריד והכותרות של הכתבות הקטנות */
   .news-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* כתבה אחת בשורה */
     gap: 15px;
   }
 
-  /* שורת חיפוש - תתפרס על כל הרוחב בלי לחתוך */
-  .search-inner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    padding: 8px;
+  .article-content h2 {
+    font-size: 1.1em;
+    line-height: 1.2;
   }
 
-  .search-inner input,
-  .search-inner select,
-  .search-inner .search-icon {
-    width: 100%;
-    padding: 10px;
-    font-size: 1em;
-  }
-
-  .search-inner .search-icon {
-    text-align: center;
-    font-size: 1.4em;
+  /* הקטנת כותרת האתר העליונה */
+  .title-text {
+    font-size: 1.8em;
   }
 }
 
