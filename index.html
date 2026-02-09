@@ -441,6 +441,16 @@ function displayNews(newsList) {
         h3.textContent = mainArticle.subtitle;
         heroContent.appendChild(h3);
     }
+    if (mainArticle.writer || mainArticle.timestamp) {
+       const writerP = document.createElement('p');
+       writerP.style.fontSize = '0.85em';
+       writerP.style.marginTop = '6px';
+       writerP.style.opacity = '0.8';
+       writerP.textContent = (mainArticle.writer || '') + 
+          (mainArticle.writer && mainArticle.timestamp ? " | " : "") + 
+          (mainArticle.timestamp || '');
+       heroContent.appendChild(writerP);
+   }
     hero.appendChild(heroContent);
     container.appendChild(hero);
 
