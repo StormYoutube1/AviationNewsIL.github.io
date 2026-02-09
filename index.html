@@ -296,6 +296,59 @@ header {
   .news-hero .hero-content h2 { font-size: 1.5em; }
   .news-grid { grid-template-columns: 1fr; }
 }
+/* =========================
+   שינויים מיוחדים למובייל קטן
+========================= */
+@media (max-width: 600px) {
+  /* HERO */
+  .news-hero .hero-content {
+    padding: 15px;
+    bottom: auto;      /* לא להיצמד לתחתית */
+    position: relative; /* לא absolute כדי שהטקסט לא ייחתך */
+    background: rgba(0,0,0,0.3); /* רקע חצי שקוף למובייל */
+  }
+
+  .news-hero .hero-content h2,
+  .news-hero .hero-content p {
+    font-size: 1.3em; /* הכותרות קטנות יותר להתאמה למסך */
+    line-height: 1.3em;
+    word-break: break-word; /* שובר מילים ארוכות */
+  }
+
+  /* SEARCH BAR */
+  .search-inner {
+    flex-direction: column; /* האלמנטים אחד על השני */
+    padding: 10px;
+  }
+
+  .search-inner input,
+  .search-inner select,
+  .search-inner .search-icon {
+    width: 100%;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+
+  .search-inner .search-icon {
+    font-size: 1.8em;
+    text-align: center;
+  }
+
+  /* כרטיסי הכתבות */
+  .news-grid {
+    grid-template-columns: 1fr !important; /* כל כרטיס תופס את כל הרוחב */
+  }
+
+  .article-content h2 {
+    font-size: 1.1em;
+  }
+
+  .article-content h3,
+  .article-content p {
+    font-size: 0.85em;
+  }
+}
+
 
 /* =========================
    אייקונים צפים
