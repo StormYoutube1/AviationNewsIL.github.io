@@ -293,41 +293,59 @@ header {
 
 @media(max-width: 480px) {
   .news-hero img { height: 200px; }
-  .news-hero .hero-content { padding: 15px; }
-  .news-hero .hero-content h2 { font-size: 1.5em; line-height: 1.3em; }
-  .news-hero .hero-content p { font-size: 0.85em; line-height: 1.2em; }
+  .news-hero .hero-content h2 { font-size: 1.5em; }
+  .news-grid { grid-template-columns: 1fr; }
+}
+/* =========================
+   תיקונים למובייל
+========================= */
+@media (max-width: 600px) {
 
-  .news-grid { 
-    grid-template-columns: 1fr; 
-    gap: 15px; 
+  /* הכתבה הראשית תתפרס על כל הרוחב, הכותרת לא תיחתך */
+  .news-hero .hero-content {
+    padding: 15px;
+    position: relative; /* לא מעל התמונה כדי שתישאר גלויה */
+    background: rgba(0, 0, 0, 0.6);
   }
 
-  .article-card .article-content h2,
-  .article-card .article-content h3 {
-    font-size: 1em;
-    line-height: 1.2em;
-    word-break: break-word; /* מאפשר כותרות ארוכות לשבור שורה */
+  .news-hero .hero-content h2 {
+    font-size: 1.8em; /* קטן יותר מהמובייל */
+    word-break: break-word; /* שובר מילים ארוכות */
   }
 
+  .news-hero .hero-content p {
+    font-size: 0.85em;
+    word-break: break-word;
+  }
+
+  /* רשת המגזין - עמודה אחת לכל הכתבות */
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* שורת חיפוש - תתפרס על כל הרוחב בלי לחתוך */
   .search-inner {
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
-    max-width: 100%; /* תופס את כל רוחב המסך */
+    padding: 8px;
   }
 
   .search-inner input,
   .search-inner select,
   .search-inner .search-icon {
-    width: 100%; /* כל שורה תתפוס 100% */
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
   }
 
   .search-inner .search-icon {
     text-align: center;
+    font-size: 1.4em;
   }
 }
 
-   
 
 /* =========================
    אייקונים צפים
@@ -563,4 +581,3 @@ loadNews();
 </script>
 
 </body>
-</html>
